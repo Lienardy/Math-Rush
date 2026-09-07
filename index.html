@@ -81,6 +81,7 @@
         <h2 id="question">Question goes here</h2>
 
         <div id="choices"></div>
+        <div id="bonusMessage"></div>
 
     </div>
 
@@ -203,50 +204,37 @@
 </div>
 
 
-    <div id="leaderboardScreen">
+   <div id="leaderboardScreen">
 
         <h1>🏆 Leaderboard</h1>
 
-        <ol id="leaderboard">
-        </ol>
+        <ol id="leaderboard"></ol>
 
         <button id="backToHome">
             Back to Home
         </button>
 
-    
-
-    <div id="soloInfo">
-
-        <h3 id="score">
-            Score: 0
-        </h3>
-
-        <h3 id="timer">
-            Time: 30
-        </h3>
-
-        <h3 id="combo">
-            🔥 Combo: 0
-        </h3>
-
     </div>
+
+
+    <audio id="bgMusic" loop>
+        <source
+            src="music/bg-music.mp3"
+            type="audio/mpeg"
+        >
+    </audio>
+
+
+    <audio id="gameOverMusic">
+        <source
+            src="music/gameover.mp3"
+            type="audio/mpeg"
+        >
+    </audio>
 
 
     <script src="Script.js"></script>
 
-
-    <div id="soloInfo">
-
-        <h3 id="score">Score: 0</h3>
-
-        <h3 id="timer">Time: 30</h3>
-
-        <h3 id="combo">🔥 Combo: 0</h3>
-
-        <h3 id="questions">📚 Questions: 0</h3>
-
-    </div>
 </body>
 
 </html>
