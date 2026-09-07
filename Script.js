@@ -4,8 +4,11 @@ let gameOver = false;
 let time = 30;
 let timer;
 let lastGameMode = "";
+let questionsAnswered = 0;
 
 
+const questionsElement =
+    document.getElementById("questions");
 
 const backToHomeFromGameOver =
     document.getElementById("backToHomeFromGameOver");
@@ -343,144 +346,61 @@ function generateQuestion() {
 
 
 function showQuestion(question) {
-
     choicesElement.innerHTML = "";
-
 
     questionElement.textContent =
         `${question.number1} ${question.operator} ${question.number2} = ?`;
 
+    question.choices.forEach((choice) => {
+        const button = document.createElement("button");
+        button.textContent = choice;
 
-    question.choices.forEach(
-        (choice) => {
+        button.addEventListener("click", () => {
+            if (gameOver) {
+                return;
+            }
 
-            const button =
-                document.createElement("button");
+            const buttons = choicesElement.querySelectorAll("button");
+            buttons.forEach((btn) => {
+                btn.disabled = true;
+            });
 
+            if (choice === question.answer) {
+                button.classList.add("correct");
+                score++;
+                combo++;
 
-            button.textContent =
-                choice;
+                scoreElement.textContent = `Score: ${score}`;
+                comboElement.textContent = `🔥 Combo: ${combo}`;
 
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    if (gameOver) {
-                        return;
+                setTimeout(() => {
+                    if (!gameOver) {
+                        showQuestion(generateQuestion());
                     }
+                }, 100);
+            } else {
+                button.classList.add("wrong");
+                score = Math.max(0, score - 1);
+                combo = 0;
 
-                    const buttons =
-                        choicesElement.querySelectorAll("button");
+                scoreElement.textContent = `Score: ${score}`;
+                comboElement.textContent = `🔥 Combo: ${combo}`;
 
-                    buttons.forEach((button) => {
-                        button.disabled = true;
-                    });
-
-                    if (choice === question.answer) {
-
-                        button.classList.add("correct");
-
-                        score++;
-                        combo++;
-
-                        scoreElement.textContent =
-                            `Score: ${score}`;
-
-                        comboElement.textContent =
-                            `🔥 Combo: ${combo}`;
-
-                        setTimeout(() => {
-
-                            if (!gameOver) {
-                                showQuestion(
-                                    generateQuestion()
-                                );
-                            }
-
-                        }, 100);
-
-                    } else {
-
-                        button.classList.add("wrong");
-
-                        score =
-                            Math.max(0, score - 1);
-
-                        combo = 0;
-
-                        scoreElement.textContent =
-                            `Score: ${score}`;
-
-                        comboElement.textContent =
-                            `🔥 Combo: ${combo}`;
-
-                        setTimeout(() => {
-
-                            if (!gameOver) {
-                                showQuestion(
-                                    generateQuestion()
-                                );
-                            }
-
-                        }, 500);
+                setTimeout(() => {
+                    if (!gameOver) {
+                        showQuestion(generateQuestion());
                     }
-                }
-            );
+                }, 500);
+            }
+        });
 
-                    } else {
-
-                        score =
-                            Math.max(
-                                0,
-                                score - 1
-                            );
-
-
-                        combo = 0;
-
-
-                        scoreElement.textContent =
-                            `Score: ${score}`;
-
-
-                        comboElement.textContent =
-                            `🔥 Combo: ${combo}`;
-
-
-                        setTimeout(
-                            () => {
-
-                                if (!gameOver) {
-
-                                    showQuestion(
-                                        generateQuestion()
-                                    );
-
-                                }
-
-                            },
-                            500
-
-                        );
-
-                    }
-
-                }
-            );
-
-
-            choicesElement.appendChild(
-                button
-            );
-
-        }
-    );
+        choicesElement.appendChild(button);
+    });
 }
 
 
 function startGame(duration) {
-
+    questionsAnswered = 0;
     clearInterval(timer);
 
     lastGameMode = "solo";
