@@ -370,54 +370,63 @@ function showQuestion(question) {
                         return;
                     }
 
-
                     const buttons =
-                        choicesElement.querySelectorAll(
-                            "button"
-                        );
+                        choicesElement.querySelectorAll("button");
 
+                    buttons.forEach((button) => {
+                        button.disabled = true;
+                    });
 
-                    buttons.forEach(
-                        (button) => {
+                    if (choice === question.answer) {
 
-                            button.disabled = true;
-
-                        }
-                    );
-
-
-                    if (
-                        choice === question.answer
-                    ) {
+                        button.classList.add("correct");
 
                         score++;
-
                         combo++;
-
 
                         scoreElement.textContent =
                             `Score: ${score}`;
 
+                        comboElement.textContent =
+                            `🔥 Combo: ${combo}`;
+
+                        setTimeout(() => {
+
+                            if (!gameOver) {
+                                showQuestion(
+                                    generateQuestion()
+                                );
+                            }
+
+                        }, 100);
+
+                    } else {
+
+                        button.classList.add("wrong");
+
+                        score =
+                            Math.max(0, score - 1);
+
+                        combo = 0;
+
+                        scoreElement.textContent =
+                            `Score: ${score}`;
 
                         comboElement.textContent =
                             `🔥 Combo: ${combo}`;
 
+                        setTimeout(() => {
 
-                        setTimeout(
-                            () => {
+                            if (!gameOver) {
+                                showQuestion(
+                                    generateQuestion()
+                                );
+                            }
 
-                                if (!gameOver) {
-
-                                    showQuestion(
-                                        generateQuestion()
-                                    );
-
-                                }
-
-                            },
-                            100
-
-                        );
+                        }, 500);
+                    }
+                }
+            );
 
                     } else {
 
