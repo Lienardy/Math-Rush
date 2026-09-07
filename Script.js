@@ -257,6 +257,7 @@ backToHome.addEventListener("click", () => {
 backToHomeFromGameOver.addEventListener(
     "click",
     () => {
+
         showHome();
     }
 );
@@ -275,6 +276,7 @@ function generateQuestion() {
         "/"
     ];
 
+
     operator =
         operators[
             Math.floor(
@@ -291,10 +293,12 @@ function generateQuestion() {
                 Math.random() * 10
             ) + 1;
 
+
         const result =
             Math.floor(
                 Math.random() * 10
             ) + 1;
+
 
         number1 =
             number2 * result;
@@ -305,6 +309,7 @@ function generateQuestion() {
             Math.floor(
                 Math.random() * 50
             ) + 1;
+
 
         number2 =
             Math.floor(
@@ -417,7 +422,9 @@ function showQuestion(question) {
     question.choices.forEach(choice => {
 
         const button =
-            document.createElement("button");
+            document.createElement(
+                "button"
+            );
 
 
         button.textContent = choice;
@@ -542,7 +549,9 @@ function showQuestion(question) {
         );
 
 
-        choicesElement.appendChild(button);
+        choicesElement.appendChild(
+            button
+        );
     });
 }
 
@@ -573,7 +582,8 @@ function startGame(duration) {
 
     hideAllScreens();
 
-    gameScreen.style.display = "flex";
+    gameScreen.style.display =
+        "flex";
 
 
     if (bgMusic && bgMusic.paused) {
@@ -582,7 +592,8 @@ function startGame(duration) {
     }
 
 
-    soloSaveArea.style.display = "none";
+    soloSaveArea.style.display =
+        "none";
 
 
     scoreElement.textContent =
@@ -677,16 +688,22 @@ function startGame(duration) {
 }
 
 
-btn30.addEventListener("click", () => {
+btn30.addEventListener(
+    "click",
+    () => {
 
-    startGame(30);
-});
+        startGame(30);
+    }
+);
 
 
-btn60.addEventListener("click", () => {
+btn60.addEventListener(
+    "click",
+    () => {
 
-    startGame(60);
-});
+        startGame(60);
+    }
+);
 
 
 function getStorageKey() {
@@ -779,6 +796,7 @@ function showHomeLeaderboards() {
     const scores30 =
         getScores(30);
 
+
     const scores60 =
         getScores(60);
 
@@ -786,7 +804,7 @@ function showHomeLeaderboards() {
     scores30
         .slice(0, 5)
         .forEach(
-            (player, index) => {
+            player => {
 
                 const li =
                     document.createElement(
@@ -795,7 +813,7 @@ function showHomeLeaderboards() {
 
 
                 li.textContent =
-                    `${index + 1}. ${player.name} - ${player.score}`;
+                    `${player.name} - ${player.score}`;
 
 
                 homeLeaderboard30.appendChild(
@@ -808,7 +826,7 @@ function showHomeLeaderboards() {
     scores60
         .slice(0, 5)
         .forEach(
-            (player, index) => {
+            player => {
 
                 const li =
                     document.createElement(
@@ -817,7 +835,7 @@ function showHomeLeaderboards() {
 
 
                 li.textContent =
-                    `${index + 1}. ${player.name} - ${player.score}`;
+                    `${player.name} - ${player.score}`;
 
 
                 homeLeaderboard60.appendChild(
@@ -846,7 +864,7 @@ function showGameLeaderboard() {
     scores
         .slice(0, 5)
         .forEach(
-            (player, index) => {
+            player => {
 
                 const li =
                     document.createElement(
@@ -883,7 +901,7 @@ function showLeaderboard() {
 
 
     scores.forEach(
-        (player, index) => {
+        player => {
 
             const li =
                 document.createElement(
@@ -892,10 +910,12 @@ function showLeaderboard() {
 
 
             li.textContent =
-                `${index + 1}. ${player.name} - ${player.score}`;
+                `${player.name} - ${player.score}`;
 
 
-            leaderboard.appendChild(li);
+            leaderboard.appendChild(
+                li
+            );
         }
     );
 }
