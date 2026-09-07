@@ -3,8 +3,12 @@ let combo = 0;
 let gameOver = false;
 let time = 30;
 let timer;
+let lastGameMode = "";
 
 
+
+const backToHomeFromGameOver =
+    document.getElementById("backToHomeFromGameOver");
 
 const gameLeaderboardList =
     document.getElementById("gameLeaderboardList");
@@ -470,6 +474,7 @@ function startGame(duration) {
 
     clearInterval(timer);
 
+    lastGameMode = "solo";
 
     score = 0;
 
@@ -692,6 +697,7 @@ function startVersusGame() {
 
     clearInterval(timer);
 
+    lastGameMode = "versus";
 
     player1Score = 0;
 
@@ -968,8 +974,26 @@ playAgain.addEventListener(
 
         playerName.value = "";
 
-        showHome();
+        if (lastGameMode === "solo") {
 
+            hideAllScreens();
+
+            soloMenu.style.display = "flex";
+
+        } else {
+
+            startVersusGame();
+
+        }
+
+    }
+);
+
+backToHomeFromGameOver.addEventListener(
+    "click",
+    () => {
+        playerName.value = "";
+        showHome();
     }
 );
 
