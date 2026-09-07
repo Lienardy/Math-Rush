@@ -6,103 +6,45 @@ let timer;
 let lastGameMode = "";
 let questionsAnswered = 0;
 
+const bgMusic = document.getElementById("bgMusic");
+const bonusMessage = document.getElementById("bonusMessage");
+const homeScreen = document.getElementById("homeScreen");
+const soloMenu = document.getElementById("soloMenu");
+const gameScreen = document.getElementById("gameScreen");
+const versusMenu = document.getElementById("versusMenu");
+const versusScreen = document.getElementById("versusScreen");
+const gameOverScreen = document.getElementById("gameOverScreen");
+const leaderboardScreen = document.getElementById("leaderboardScreen");
 
-const questionsElement =
-    document.getElementById("questions");
+const btnSolo = document.getElementById("btnSolo");
+const btnVersus = document.getElementById("btnVersus");
+const btn30 = document.getElementById("btn30");
+const btn60 = document.getElementById("btn60");
+const btnVersusStart = document.getElementById("btnVersusStart");
 
+const backFromSolo = document.getElementById("backFromSolo");
+const backFromVersus = document.getElementById("backFromVersus");
+const backToHome = document.getElementById("backToHome");
 const backToHomeFromGameOver =
     document.getElementById("backToHomeFromGameOver");
 
+const scoreElement = document.getElementById("score");
+const timerElement = document.getElementById("timer");
+const comboElement = document.getElementById("combo");
+const questionElement = document.getElementById("question");
+const choicesElement = document.getElementById("choices");
+
+const finalScore = document.getElementById("finalScore");
+const playerName = document.getElementById("playerName");
+const saveScore = document.getElementById("saveScore");
+const soloSaveArea = document.getElementById("soloSaveArea");
+
+const leaderboard = document.getElementById("leaderboard");
+const homeLeaderboard = document.getElementById("homeLeaderboard");
 const gameLeaderboardList =
     document.getElementById("gameLeaderboardList");
 
-const homeScreen =
-    document.getElementById("homeScreen");
-
-const soloMenu =
-    document.getElementById("soloMenu");
-
-const gameScreen =
-    document.getElementById("gameScreen");
-
-const versusMenu =
-    document.getElementById("versusMenu");
-
-const versusScreen =
-    document.getElementById("versusScreen");
-
-const gameOverScreen =
-    document.getElementById("gameOverScreen");
-
-const leaderboardScreen =
-    document.getElementById("leaderboardScreen");
-
-
-const btnSolo =
-    document.getElementById("btnSolo");
-
-const btnVersus =
-    document.getElementById("btnVersus");
-
-const btn30 =
-    document.getElementById("btn30");
-
-const btn60 =
-    document.getElementById("btn60");
-
-const btnVersusStart =
-    document.getElementById("btnVersusStart");
-
-
-const backFromSolo =
-    document.getElementById("backFromSolo");
-
-const backFromVersus =
-    document.getElementById("backFromVersus");
-
-const backToHome =
-    document.getElementById("backToHome");
-
-
-const scoreElement =
-    document.getElementById("score");
-
-const timerElement =
-    document.getElementById("timer");
-
-const comboElement =
-    document.getElementById("combo");
-
-const questionElement =
-    document.getElementById("question");
-
-const choicesElement =
-    document.getElementById("choices");
-
-
-const finalScore =
-    document.getElementById("finalScore");
-
-const playerName =
-    document.getElementById("playerName");
-
-const saveScore =
-    document.getElementById("saveScore");
-
-const soloSaveArea =
-    document.getElementById("soloSaveArea");
-
-
-const leaderboard =
-    document.getElementById("leaderboard");
-
-const homeLeaderboard =
-    document.getElementById("homeLeaderboard");
-
-
-const playAgain =
-    document.getElementById("playAgain");
-
+const playAgain = document.getElementById("playAgain");
 
 const player1ScoreElement =
     document.getElementById("player1Score");
@@ -122,35 +64,51 @@ const player1Choices =
 const player2Choices =
     document.getElementById("player2Choices");
 
-
 let player1Score = 0;
 let player2Score = 0;
 let versusRunning = false;
 
 
 function hideAllScreens() {
-
     homeScreen.style.display = "none";
-
     soloMenu.style.display = "none";
-
     gameScreen.style.display = "none";
-
     versusMenu.style.display = "none";
-
     versusScreen.style.display = "none";
-
     gameOverScreen.style.display = "none";
-
     leaderboardScreen.style.display = "none";
 }
 
 
-function showHome() {
+function playMusic() {
+    if (!bgMusic) {
+        return;
+    }
 
+    bgMusic.currentTime = 0;
+
+    bgMusic.play().catch(error => {
+        console.log("Music error:", error);
+    });
+}
+
+
+function stopMusic() {
+    if (!bgMusic) {
+        return;
+    }
+
+    bgMusic.pause();
+    bgMusic.currentTime = 0;
+}
+
+
+function showHome() {
     clearInterval(timer);
 
     versusRunning = false;
+
+    stopMusic();
 
     hideAllScreens();
 
@@ -162,40 +120,36 @@ function showHome() {
 
 btnSolo.addEventListener("click", () => {
 
+    playMusic();
+
     hideAllScreens();
 
     soloMenu.style.display = "flex";
-
 });
 
 
 btnVersus.addEventListener("click", () => {
 
+    playMusic();
+
     hideAllScreens();
 
     versusMenu.style.display = "flex";
-
 });
 
 
 backFromSolo.addEventListener("click", () => {
-
     showHome();
-
 });
 
 
 backFromVersus.addEventListener("click", () => {
-
     showHome();
-
 });
 
 
 backToHome.addEventListener("click", () => {
-
     showHome();
-
 });
 
 
@@ -205,23 +159,14 @@ function generateQuestion() {
     let number2;
     let operator;
 
-
-    const operators = [
-        "+",
-        "*",
-        "-",
-        "/"
-    ];
-
+    const operators = ["+", "*", "-", "/"];
 
     operator =
         operators[
             Math.floor(
-                Math.random() *
-                operators.length
+                Math.random() * operators.length
             )
         ];
-
 
     if (operator === "/") {
 
@@ -230,15 +175,12 @@ function generateQuestion() {
                 Math.random() * 10
             ) + 1;
 
-
         const result =
             Math.floor(
                 Math.random() * 10
             ) + 1;
 
-
-        number1 =
-            number2 * result;
+        number1 = number2 * result;
 
     } else {
 
@@ -246,55 +188,44 @@ function generateQuestion() {
             Math.floor(
                 Math.random() * 50
             ) + 1;
-
 
         number2 =
             Math.floor(
                 Math.random() * 50
             ) + 1;
-
     }
 
 
     let answer;
 
-
     if (operator === "+") {
 
-        answer =
-            number1 + number2;
+        answer = number1 + number2;
 
     } else if (operator === "*") {
 
-        answer =
-            number1 * number2;
+        answer = number1 * number2;
 
     } else if (operator === "-") {
 
-        answer =
-            number1 - number2;
+        answer = number1 - number2;
 
     } else {
 
-        answer =
-            number1 / number2;
-
+        answer = number1 / number2;
     }
 
 
     let wrongAnswer1;
 
-
     do {
 
         wrongAnswer1 =
             answer +
-            Math.floor(
-                Math.random() * 40
-            ) + 1 -
-            Math.floor(
-                Math.random() * 40
-            ) - 1;
+            Math.floor(Math.random() * 40) +
+            1 -
+            Math.floor(Math.random() * 40) -
+            1;
 
     } while (
         wrongAnswer1 === answer ||
@@ -304,17 +235,14 @@ function generateQuestion() {
 
     let wrongAnswer2;
 
-
     do {
 
         wrongAnswer2 =
             answer +
-            Math.floor(
-                Math.random() * 40
-            ) + 1 -
-            Math.floor(
-                Math.random() * 40
-            ) - 1;
+            Math.floor(Math.random() * 40) +
+            1 -
+            Math.floor(Math.random() * 40) -
+            1;
 
     } while (
         wrongAnswer2 === answer ||
@@ -328,7 +256,6 @@ function generateQuestion() {
         wrongAnswer1,
         wrongAnswer2
     ];
-
 
     choices.sort(
         () => Math.random() - 0.5
@@ -346,58 +273,107 @@ function generateQuestion() {
 
 
 function showQuestion(question) {
+
     choicesElement.innerHTML = "";
 
     questionElement.textContent =
         `${question.number1} ${question.operator} ${question.number2} = ?`;
 
-    question.choices.forEach((choice) => {
-        const button = document.createElement("button");
+    question.choices.forEach(choice => {
+
+        const button =
+            document.createElement("button");
+
         button.textContent = choice;
 
         button.addEventListener("click", () => {
+
             if (gameOver) {
                 return;
             }
 
-            const buttons = choicesElement.querySelectorAll("button");
-            buttons.forEach((btn) => {
+            const buttons =
+                choicesElement.querySelectorAll("button");
+
+            buttons.forEach(btn => {
                 btn.disabled = true;
             });
 
+            questionsAnswered++;
+
             if (choice === question.answer) {
+
                 button.classList.add("correct");
-                if(combo >= 10) {
-                    score += 3;
-                } else if(combo >= 5 && combo < 10) {
-                    score += 2;
-                } else{
-                    score++;
-                }
+
                 combo++;
 
-                scoreElement.textContent = `Score: ${score}`;
-                comboElement.textContent = `🔥 Combo: ${combo}`;
+                if (combo >= 10) {
+
+                    score += 3;
+
+                    if (combo === 10) {
+                        showBonus("⚡ COMBO 10! +3 SCORE");
+                    }
+
+                } else if (combo >= 5) {
+
+                    score += 2;
+
+                    if (combo === 5) {
+                        showBonus("🔥 COMBO 5! +2 SCORE");
+                    }
+
+                } else {
+
+                    score += 1;
+                }
+
+                scoreElement.textContent =
+                    `Score: ${score}`;
+
+                updateCombo();
 
                 setTimeout(() => {
+
                     if (!gameOver) {
-                        showQuestion(generateQuestion());
+
+                        showQuestion(
+                            generateQuestion()
+                        );
                     }
+
                 }, 100);
+
             } else {
+
                 button.classList.add("wrong");
-                score = Math.max(0, score - 1);
+
+                score =
+                    Math.max(
+                        0,
+                        score - 1
+                    );
+
                 combo = 0;
 
-                scoreElement.textContent = `Score: ${score}`;
-                comboElement.textContent = `🔥 Combo: ${combo}`;
+                scoreElement.textContent =
+                    `Score: ${score}`;
+
+                comboElement.textContent =
+                    `🔥 Combo: 0`;
 
                 setTimeout(() => {
+
                     if (!gameOver) {
-                        showQuestion(generateQuestion());
+
+                        showQuestion(
+                            generateQuestion()
+                        );
                     }
+
                 }, 500);
             }
+
         });
 
         choicesElement.appendChild(button);
@@ -406,155 +382,138 @@ function showQuestion(question) {
 
 
 function startGame(duration) {
+
     questionsAnswered = 0;
+
     clearInterval(timer);
 
     lastGameMode = "solo";
 
     score = 0;
-
     combo = 0;
-
     time = duration;
-
     gameOver = false;
 
+    timerElement.classList.remove("warning");
 
     hideAllScreens();
 
+    gameScreen.style.display = "block";
 
-    gameScreen.style.display =
-        "block";
+    if (bgMusic && bgMusic.paused) {
+        bgMusic.play().catch(error => {
+            console.log("Music error:", error);
+        });
+    }
 
+    soloSaveArea.style.display = "block";
 
-    soloSaveArea.style.display =
-        "block";
-
-
-    scoreElement.textContent =
-        "Score: 0";
-
-
-    comboElement.textContent =
-        "🔥 Combo: 0";
-
-
-    timerElement.textContent =
-        `Time: ${time}`;
-
+    scoreElement.textContent = "Score: 0";
+    comboElement.textContent = "🔥 Combo: 0";
+    timerElement.textContent = `Time: ${time}`;
 
     showQuestion(
         generateQuestion()
-        
     );
+
     showGameLeaderboard();
 
 
-    timer = setInterval(
-        () => {
+    timer = setInterval(() => {
 
-            time--;
+        time--;
 
-
-            timerElement.textContent =
-                `Time: ${time}`;
+        timerElement.textContent =
+            `Time: ${time}`;
 
 
-            if (time <= 0) {
+        if (time <= 5 && time > 0) {
 
-                clearInterval(timer);
+            timerElement.classList.add("warning");
 
-                gameOver = true;
-
-
-                gameScreen.style.display =
-                    "none";
-
-
-                gameOverScreen.style.display =
-                    "block";
-
-
-                soloSaveArea.style.display =
-                    "block";
-
-
-                finalScore.textContent =
-                    `Score: ${score}`;
-
+            if (navigator.vibrate) {
+                navigator.vibrate(150);
             }
 
-        },
-        1000
-    );
-}
+        } else {
 
-
-btn30.addEventListener(
-    "click",
-    () => {
-
-        startGame(30);
-
-    }
-);
-
-
-btn60.addEventListener(
-    "click",
-    () => {
-
-        startGame(60);
-
-    }
-);
-
-
-saveScore.addEventListener(
-    "click",
-    () => {
-
-        const name =
-            playerName.value.trim();
-
-
-        if (name === "") {
-            return;
+            timerElement.classList.remove(
+                "warning"
+            );
         }
 
 
-        let scores =
-            JSON.parse(
-                localStorage.getItem("scores")
-            ) || [];
+        if (time <= 0) {
+
+            clearInterval(timer);
+
+            timerElement.classList.remove(
+                "warning"
+            );
+
+            gameOver = true;
+
+            stopMusic();
+
+            gameScreen.style.display = "none";
+
+            gameOverScreen.style.display = "flex";
+
+            soloSaveArea.style.display = "flex";
+
+            finalScore.textContent =
+                `Score: ${score}`;
+        }
+
+    }, 1000);
+}
 
 
-        scores.push({
-            name: name,
-            score: score
-        });
+btn30.addEventListener("click", () => {
+    startGame(30);
+});
 
 
-        scores.sort(
-            (a, b) =>
-                b.score - a.score
-        );
+btn60.addEventListener("click", () => {
+    startGame(60);
+});
 
 
-        scores =
-            scores.slice(0, 10);
+saveScore.addEventListener("click", () => {
 
+    const name =
+        playerName.value.trim();
 
-        localStorage.setItem(
-            "scores",
-            JSON.stringify(scores)
-        );
-
-
-        showLeaderboard();
-
+    if (name === "") {
+        return;
     }
-);
+
+    let scores =
+        JSON.parse(
+            localStorage.getItem("scores")
+        ) || [];
+
+    scores.push({
+        name: name,
+        score: score
+    });
+
+    scores.sort(
+        (a, b) =>
+            b.score - a.score
+    );
+
+    scores =
+        scores.slice(0, 10);
+
+    localStorage.setItem(
+        "scores",
+        JSON.stringify(scores)
+    );
+
+    showLeaderboard();
+});
+
 
 function showGameLeaderboard() {
 
@@ -567,7 +526,7 @@ function showGameLeaderboard() {
 
     scores
         .slice(0, 5)
-        .forEach((player) => {
+        .forEach(player => {
 
             const li =
                 document.createElement("li");
@@ -576,56 +535,41 @@ function showGameLeaderboard() {
                 `${player.name} - ${player.score}`;
 
             gameLeaderboardList.appendChild(li);
-
         });
 }
+
 
 function showLeaderboard() {
 
     hideAllScreens();
 
-
     leaderboardScreen.style.display =
-        "block";
-
+        "flex";
 
     leaderboard.innerHTML = "";
-
 
     const scores =
         JSON.parse(
             localStorage.getItem("scores")
         ) || [];
 
+    scores.forEach(player => {
 
-    scores.forEach(
-        (player) => {
+        const li =
+            document.createElement("li");
 
-            const li =
-                document.createElement("li");
+        li.textContent =
+            `${player.name} - ${player.score}`;
 
-
-            li.textContent =
-                `${player.name} - ${player.score}`;
-
-
-            leaderboard.appendChild(
-                li
-            );
-
-        }
-    );
+        leaderboard.appendChild(li);
+    });
 }
 
 
-btnVersusStart.addEventListener(
-    "click",
-    () => {
+btnVersusStart.addEventListener("click", () => {
 
-        startVersusGame();
-
-    }
-);
+    startVersusGame();
+});
 
 
 function startVersusGame() {
@@ -635,30 +579,21 @@ function startVersusGame() {
     lastGameMode = "versus";
 
     player1Score = 0;
-
     player2Score = 0;
 
     versusRunning = true;
 
-
     hideAllScreens();
 
+    versusScreen.style.display = "flex";
 
-    versusScreen.style.display =
-        "flex";
-
-
-    soloSaveArea.style.display =
-        "none";
-
+    soloSaveArea.style.display = "none";
 
     player1ScoreElement.textContent =
         "Score: 0";
 
-
     player2ScoreElement.textContent =
         "Score: 0";
-
 
     showVersusQuestion(
         generateQuestion()
@@ -671,23 +606,16 @@ function showVersusQuestion(question) {
     player1Question.textContent =
         `${question.number1} ${question.operator} ${question.number2} = ?`;
 
-
     player2Question.textContent =
         `${question.number1} ${question.operator} ${question.number2} = ?`;
 
-
     player1Choices.innerHTML = "";
-
     player2Choices.innerHTML = "";
-
 
     let answered = false;
 
 
-    function checkAnswer(
-        choice,
-        player
-    ) {
+    function checkAnswer(choice, player) {
 
         if (
             !versusRunning ||
@@ -696,18 +624,14 @@ function showVersusQuestion(question) {
             return;
         }
 
-
         answered = true;
 
 
-        if (
-            choice === question.answer
-        ) {
+        if (choice === question.answer) {
 
             if (player === 1) {
 
                 player1Score++;
-
 
                 player1ScoreElement.textContent =
                     `Score: ${player1Score}`;
@@ -716,10 +640,8 @@ function showVersusQuestion(question) {
 
                 player2Score++;
 
-
                 player2ScoreElement.textContent =
                     `Score: ${player2Score}`;
-
             }
 
         } else {
@@ -728,7 +650,6 @@ function showVersusQuestion(question) {
 
                 player2Score++;
 
-
                 player2ScoreElement.textContent =
                     `Score: ${player2Score}`;
 
@@ -736,12 +657,9 @@ function showVersusQuestion(question) {
 
                 player1Score++;
 
-
                 player1ScoreElement.textContent =
                     `Score: ${player1Score}`;
-
             }
-
         }
 
 
@@ -756,84 +674,68 @@ function showVersusQuestion(question) {
         }
 
 
-        setTimeout(
-            () => {
+        setTimeout(() => {
 
-                if (versusRunning) {
+            if (versusRunning) {
 
-                    showVersusQuestion(
-                        generateQuestion()
-                    );
+                showVersusQuestion(
+                    generateQuestion()
+                );
+            }
 
-                }
-
-            },
-            300
-        );
+        }, 300);
     }
 
 
-    question.choices.forEach(
-        (choice) => {
+    question.choices.forEach(choice => {
+
+        const button1 =
+            document.createElement("button");
+
+        button1.textContent = choice;
+
+        button1.addEventListener("click", () => {
+
+            checkAnswer(choice, 1);
+
+        });
+
+        player1Choices.appendChild(button1);
 
 
-            const button1 =
-                document.createElement(
-                    "button"
-                );
+        const button2 =
+            document.createElement("button");
+
+        button2.textContent = choice;
+
+        button2.addEventListener("click", () => {
+
+            checkAnswer(choice, 2);
+
+        });
+
+        player2Choices.appendChild(button2);
+    });
+}
 
 
-            button1.textContent =
-                choice;
+function updateCombo() {
 
+    comboElement.textContent =
+        `🔥 Combo: ${combo}`;
 
-            button1.addEventListener(
-                "click",
-                () => {
+    if (
+        combo > 0 &&
+        combo % 5 === 0
+    ) {
 
-                    checkAnswer(
-                        choice,
-                        1
-                    );
+        time += 3;
 
-                }
-            );
+        timerElement.textContent =
+            `Time: ${time}`;
 
-
-            player1Choices.appendChild(
-                button1
-            );
-
-
-            const button2 =
-                document.createElement(
-                    "button"
-                );
-
-
-            button2.textContent =
-                choice;
-
-
-            button2.addEventListener(
-                "click",
-                () => {
-
-                    checkAnswer(
-                        choice,
-                        2
-                    );
-
-                }
-            );
-
-
-            player2Choices.appendChild(
-                button2
-            );
-
-        }
-    );
+        showBonus(`🔥 COMBO ${combo}! +3 SECONDS`);
+    }
 }
 
 
@@ -841,17 +743,13 @@ function endVersusGame() {
 
     versusRunning = false;
 
+    stopMusic();
 
-    versusScreen.style.display =
-        "none";
+    versusScreen.style.display = "none";
 
+    gameOverScreen.style.display = "flex";
 
-    gameOverScreen.style.display =
-        "block";
-
-
-    soloSaveArea.style.display =
-        "none";
+    soloSaveArea.style.display = "none";
 
 
     if (player1Score >= 10) {
@@ -863,7 +761,6 @@ function endVersusGame() {
 
         finalScore.textContent =
             `PLAYER 2 WINS! ${player2Score} - ${player1Score}`;
-
     }
 }
 
@@ -872,67 +769,64 @@ function showHomeLeaderboard() {
 
     homeLeaderboard.innerHTML = "";
 
-
     const scores =
         JSON.parse(
             localStorage.getItem("scores")
         ) || [];
 
-
     scores
         .slice(0, 5)
-        .forEach(
-            (player) => {
+        .forEach(player => {
 
-                const li =
-                    document.createElement(
-                        "li"
-                    );
+            const li =
+                document.createElement("li");
 
+            li.textContent =
+                `${player.name} - ${player.score}`;
 
-                li.textContent =
-                    `${player.name} - ${player.score}`;
-
-
-                homeLeaderboard.appendChild(
-                    li
-                );
-
-            }
-        );
+            homeLeaderboard.appendChild(li);
+        });
 }
 
 
-playAgain.addEventListener(
-    "click",
-    () => {
+playAgain.addEventListener("click", () => {
 
-        playerName.value = "";
+    playerName.value = "";
 
-        if (lastGameMode === "solo") {
+    if (lastGameMode === "solo") {
 
-            hideAllScreens();
+        hideAllScreens();
 
-            soloMenu.style.display = "flex";
+        soloMenu.style.display = "flex";
 
-        } else {
+    } else {
 
-            startVersusGame();
-
-        }
-
+        startVersusGame();
     }
-);
+});
+
 
 backToHomeFromGameOver.addEventListener(
     "click",
     () => {
+
         playerName.value = "";
+
         showHome();
     }
 );
 
+function showBonus(message) {
+    bonusMessage.textContent = message;
+    bonusMessage.classList.remove("show");
 
+    void bonusMessage.offsetWidth;
 
+    bonusMessage.classList.add("show");
+
+    setTimeout(() => {
+        bonusMessage.classList.remove("show");
+    }, 1200);
+}
 
 showHome();
