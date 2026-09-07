@@ -1,0 +1,218 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: #f2f4f8;
+    color: #222;
+}
+
+#homeScreen,
+#soloMenu,
+#gameScreen,
+#versusMenu,
+#versusScreen,
+#gameOverScreen,
+#leaderboardScreen {
+    width: 100%;
+    min-height: 100vh;
+}
+
+#homeScreen,
+#soloMenu,
+#gameScreen,
+#versusMenu,
+#gameOverScreen,
+#leaderboardScreen {
+    display: none;
+    padding: 30px 20px;
+    text-align: center;
+}
+
+#homeScreen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#homeScreen h1 {
+    font-size: 42px;
+    margin-bottom: 30px;
+}
+
+#homeScreen h2 {
+    margin-bottom: 15px;
+}
+
+#homeLeaderboard {
+    margin-bottom: 30px;
+    text-align: left;
+    max-width: 350px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#homeLeaderboard li {
+    padding: 8px 0;
+    font-size: 18px;
+}
+
+button {
+    width: 100%;
+    padding: 16px;
+    margin-top: 12px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: #222;
+    color: white;
+
+    font-size: 18px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+#soloMenu,
+#versusMenu {
+    flex-direction: column;
+    justify-content: center;
+}
+
+#soloMenu h1,
+#versusMenu h1 {
+    font-size: 36px;
+    margin-bottom: 15px;
+}
+
+#soloMenu p,
+#versusMenu p {
+    margin-bottom: 20px;
+    color: #666;
+}
+
+#gameScreen {
+    padding-top: 40px;
+}
+
+#gameScreen h1 {
+    margin-bottom: 25px;
+}
+
+#soloInfo {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+}
+
+#question {
+    font-size: 42px;
+    margin-bottom: 40px;
+}
+
+#choices {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#choices button {
+    font-size: 26px;
+    padding: 20px;
+}
+
+#versusScreen {
+    display: none;
+    height: 100vh;
+    min-height: 100vh;
+    overflow: hidden;
+
+    flex-direction: column;
+}
+
+#player1Area,
+#player2Area {
+    height: 45%;
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    padding: 15px;
+    text-align: center;
+}
+
+#player1Area {
+    transform: rotate(180deg);
+}
+
+#player1Question,
+#player2Question {
+    font-size: 34px;
+    margin: 15px 0;
+}
+
+#player1Choices,
+#player2Choices {
+    display: flex;
+    gap: 8px;
+}
+
+#player1Choices button,
+#player2Choices button {
+    margin: 0;
+    padding: 18px 5px;
+    font-size: 22px;
+}
+
+#versusTimer {
+    height: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#versusTime {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#gameScreen {
+    position: relative;
+}
+
+#gameLeaderboard {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 180px;
+    padding: 15px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+#gameLeaderboard h3 {
+    margin-top: 0;
+    text-align: center;
+}
+
+#gameLeaderboard ol {
+    margin: 0;
+    padding-left: 25px;
+}
+
+#gameLeaderboard li {
+    margin-bottom: 8px;
+}

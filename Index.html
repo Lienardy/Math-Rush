@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Math Rush</title>
+
+    <link
+        rel="stylesheet"
+        href="Style.css"
+    >
+
+</head>
+
+<body>
+
+
+    <div id="homeScreen">
+
+        <h1>Math Rush</h1>
+
+        <h2>🏆 Leaderboard</h2>
+
+        <ol id="homeLeaderboard">
+        </ol>
+
+        <button id="btnSolo">
+            👤 Solo
+        </button>
+
+        <button id="btnVersus">
+            ⚔️ 1 VS 1
+        </button>
+
+    </div>
+
+
+    <div id="soloMenu">
+
+        <h1>👤 Solo</h1>
+
+        <p>Choose your time</p>
+
+        <button id="btn30">
+            30 Seconds
+        </button>
+
+        <button id="btn60">
+            60 Seconds
+        </button>
+
+        <button id="backFromSolo">
+            Back
+        </button>
+
+    </div>
+
+
+    <div id="gameScreen">
+
+        <div id="gameLeaderboard">
+            <h3>🏆 Leaderboard</h3>
+            <ol id="gameLeaderboardList"></ol>
+        </div>
+
+        <h1>Math Rush</h1>
+
+        <div id="soloInfo">
+            <h3 id="score">Score: 0</h3>
+            <h3 id="timer">Time: 30</h3>
+            <h3 id="combo">🔥 Combo: 0</h3>
+        </div>
+
+        <h2 id="question">Question goes here</h2>
+
+        <div id="choices"></div>
+
+    </div>
+
+
+    <div id="versusMenu">
+
+        <h1>⚔️ 1 VS 1</h1>
+
+        <p>
+            First to 10 points wins!
+        </p>
+
+        <button id="btnVersusStart">
+            Start Match
+        </button>
+
+        <button id="backFromVersus">
+            Back
+        </button>
+
+    </div>
+
+
+    <div id="versusScreen">
+
+
+        <div id="player1Area">
+
+            <h2 id="player1Name">
+                PLAYER 1
+            </h2>
+
+            <h3 id="player1Score">
+                Score: 0
+            </h3>
+
+            <h2 id="player1Question">
+                8 + 7 = ?
+            </h2>
+
+            <div id="player1Choices">
+
+                <button>15</button>
+
+                <button>14</button>
+
+                <button>16</button>
+
+            </div>
+
+        </div>
+
+
+        <div id="player2Area">
+
+            <h2 id="player2Name">
+                PLAYER 2
+            </h2>
+
+            <h3 id="player2Score">
+                Score: 0
+            </h3>
+
+            <h2 id="player2Question">
+                8 + 7 = ?
+            </h2>
+
+            <div id="player2Choices">
+
+                <button>15</button>
+
+                <button>14</button>
+
+                <button>16</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div id="gameOverScreen">
+
+        <h1 id="gameOverTitle">
+            GAME OVER!
+        </h1>
+
+        <h2 id="finalScore">
+            Score: 0
+        </h2>
+
+
+        <div id="soloSaveArea">
+
+            <input
+                type="text"
+                id="playerName"
+                placeholder="Enter your name"
+            >
+
+            <button id="saveScore">
+                Save Score
+            </button>
+
+        </div>
+
+
+        <button id="playAgain">
+            Play Again
+        </button>
+
+    </div>
+
+
+    <div id="leaderboardScreen">
+
+        <h1>🏆 Leaderboard</h1>
+
+        <ol id="leaderboard">
+        </ol>
+
+        <button id="backToHome">
+            Back to Home
+        </button>
+
+    
+
+    <div id="soloInfo">
+
+        <h3 id="score">
+            Score: 0
+        </h3>
+
+        <h3 id="timer">
+            Time: 30
+        </h3>
+
+        <h3 id="combo">
+            🔥 Combo: 0
+        </h3>
+
+    </div>
+
+
+    <script src="Script.js"></script>
+
+</body>
+
+</html>
