@@ -217,5 +217,51 @@ button:active {
     margin-bottom: 8px;
 }
 
+#soloSaveArea {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+}
 
-llll
+#playerName {
+    width: 280px;
+    padding: 14px 18px;
+    font-size: 18px;
+    border: 2px solid #ccc;
+    border-radius: 12px;
+    outline: none;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+#playerName:focus {
+    border-color: darkblue;
+}
+
+#saveScore {
+    width: 280px;
+    padding: 12px;
+    font-size: 17px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+#gameOverButtons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+#gameOverButtons button {
+    width: 280px;
+    padding: 13px;
+    font-size: 17px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+}
