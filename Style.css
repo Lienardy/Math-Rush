@@ -582,3 +582,53 @@ button:disabled {
     border-color: #ef4444;
     transform: scale(1.03);
 }
+
+#timer.warning {
+    animation: timerShake 0.25s infinite;
+}
+
+@keyframes timerShake {
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-4px);
+    }
+
+    50% {
+        transform: translateX(4px);
+    }
+
+    75% {
+        transform: translateX(-4px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+#comboInfo {
+    margin-top: -30px;
+    margin-bottom: 30px;
+    font-size: 14px;
+    color: #94a3b8;
+}
+
+#bonusMessage {
+    height: 30px;
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #facc15;
+    text-align: center;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: 0.2s ease;
+}
+
+#bonusMessage.show {
+    opacity: 1;
+    transform: scale(1);
+}
