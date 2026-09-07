@@ -1,116 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Math Rush</title>
 
-    <link
-        rel="stylesheet"
-        href="Style.css"
-    >
-
+    <link rel="stylesheet" href="Style.css">
 </head>
 
 <body>
 
+    <div id="homeScreen" class="screen">
 
-    <div id="homeScreen">
+        <h1>⚡ MATH RUSH ⚡</h1>
 
-        <h1>Math Rush</h1>
+        <p class="subtitle">
+            How fast can you solve it?
+        </p>
 
-        <h2>🏆 Leaderboard</h2>
+        <div id="leaderboardContainer">
 
-        <ol id="homeLeaderboard">
-        </ol>
+            <div class="homeLeaderboardBox">
+
+                <h2>🏆 30 SECONDS</h2>
+
+                <ol id="homeLeaderboard30"></ol>
+
+            </div>
+
+            <div class="homeLeaderboardBox">
+
+                <h2>⚡ 60 SECONDS</h2>
+
+                <ol id="homeLeaderboard60"></ol>
+
+            </div>
+
+        </div>
 
         <button id="btnSolo">
-            👤 Solo
+            SOLO
         </button>
 
         <button id="btnVersus">
-            ⚔️ 1 VS 1
+            1 VS 1
         </button>
 
     </div>
 
 
-    <div id="soloMenu">
+    <div id="soloMenu" class="screen">
 
-        <h1>👤 Solo</h1>
+        <h1>SOLO MODE</h1>
 
-        <p>Choose your time</p>
+        <p class="subtitle">
+            Choose your time
+        </p>
 
         <button id="btn30">
-            30 Seconds
+            30 SECONDS
         </button>
 
         <button id="btn60">
-            60 Seconds
+            60 SECONDS
         </button>
 
-        <button id="backFromSolo">
-            Back
+        <button id="backFromSolo" class="secondary">
+            BACK
         </button>
 
     </div>
 
 
-    <div id="gameScreen">
+    <div id="gameScreen" class="screen">
 
         <div id="gameLeaderboard">
-            <h3>🏆 Leaderboard</h3>
+
+            <h2 id="gameLeaderboardTitle">
+                🏆 LEADERBOARD
+            </h2>
+
             <ol id="gameLeaderboardList"></ol>
+
         </div>
 
-        <h1>Math Rush</h1>
+
+        <h1>⚡ MATH RUSH</h1>
+
 
         <div id="soloInfo">
-            <h3 id="score">Score: 0</h3>
-            <h3 id="timer">Time: 30</h3>
-            <h3 id="combo">🔥 Combo: 0</h3>
+
+            <h3 id="score">
+                Score: 0
+            </h3>
+
+            <h3 id="timer">
+                Time: 30
+            </h3>
+
+            <h3 id="combo">
+                🔥 Combo: 0
+            </h3>
+
         </div>
 
-        <h2 id="question">Question goes here</h2>
+
+        <h2 id="question">
+            1 + 1 = ?
+        </h2>
+
 
         <div id="choices"></div>
+
+
         <div id="bonusMessage"></div>
 
     </div>
 
 
-    <div id="versusMenu">
+    <div id="versusMenu" class="screen">
 
         <h1>⚔️ 1 VS 1</h1>
 
-        <p>
-            First to 10 points wins!
+        <p class="subtitle">
+            First player to 10 points wins!
         </p>
 
         <button id="btnVersusStart">
-            Start Match
+            START
         </button>
 
-        <button id="backFromVersus">
-            Back
+        <button id="backFromVersus" class="secondary">
+            BACK
         </button>
 
     </div>
 
 
-    <div id="versusScreen">
+    <div id="versusScreen" class="screen">
 
+        <div id="player1" class="player player1">
 
-        <div id="player1Area">
-
-            <h2 id="player1Name">
+            <h2>
                 PLAYER 1
             </h2>
 
@@ -119,25 +151,17 @@
             </h3>
 
             <h2 id="player1Question">
-                8 + 7 = ?
+                1 + 1 = ?
             </h2>
 
-            <div id="player1Choices">
-
-                <button>15</button>
-
-                <button>14</button>
-
-                <button>16</button>
-
-            </div>
+            <div id="player1Choices"></div>
 
         </div>
 
 
-        <div id="player2Area">
+        <div id="player2" class="player player2">
 
-            <h2 id="player2Name">
+            <h2>
                 PLAYER 2
             </h2>
 
@@ -146,29 +170,19 @@
             </h3>
 
             <h2 id="player2Question">
-                8 + 7 = ?
+                1 + 1 = ?
             </h2>
 
-            <div id="player2Choices">
-
-                <button>15</button>
-
-                <button>14</button>
-
-                <button>16</button>
-
-            </div>
+            <div id="player2Choices"></div>
 
         </div>
 
     </div>
 
 
-    <div id="gameOverScreen">
+    <div id="gameOverScreen" class="screen">
 
-        <h1 id="gameOverTitle">
-            GAME OVER!
-        </h1>
+        <h1>GAME OVER</h1>
 
         <h2 id="finalScore">
             Score: 0
@@ -184,57 +198,41 @@
             >
 
             <button id="saveScore">
-                Save Score
+                SAVE SCORE
             </button>
 
         </div>
 
-    <div id="gameOverButtons">
-
         <button id="playAgain">
-            🔄 Play Again
+            PLAY AGAIN
         </button>
 
-        <button id="backToHomeFromGameOver">
-            🏠 Back to Home
+        <button id="backToHomeFromGameOver" class="secondary">
+            HOME
         </button>
 
     </div>
 
-</div>
 
+    <div id="leaderboardScreen" class="screen">
 
-   <div id="leaderboardScreen">
-
-        <h1>🏆 Leaderboard</h1>
+        <h1>🏆 LEADERBOARD</h1>
 
         <ol id="leaderboard"></ol>
 
         <button id="backToHome">
-            Back to Home
+            HOME
         </button>
 
     </div>
 
 
     <audio id="bgMusic" loop>
-        <source
-            src="Music/bg-music.mp3"
-            type="audio/mpeg"
-        >
-    </audio>
-
-
-    <audio id="gameOverMusic">
-        <source
-            src="Music/gameover.mp3"
-            type="audio/mpeg"
-        >
+        <source src="Music/bg-music.mp3" type="audio/mpeg">
     </audio>
 
 
     <script src="Script.js"></script>
 
 </body>
-
 </html>
