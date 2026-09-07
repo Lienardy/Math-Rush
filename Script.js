@@ -367,7 +367,11 @@ function showQuestion(question) {
 
             if (choice === question.answer) {
                 button.classList.add("correct");
-                score++;
+                if(combo >= 5) {
+                    score += 2;
+                } else{
+                    score++;
+                }
                 combo++;
 
                 scoreElement.textContent = `Score: ${score}`;
@@ -927,13 +931,6 @@ backToHomeFromGameOver.addEventListener(
 );
 
 
-function bonus() {
-    if (combo >= 5) {
-        score += 2;
-        scoreElement.textContent = `Score: ${score}`;
-        comboElement.textContent = `🔥 Combo: ${combo}`;
-    }
-}
 
 
 showHome();
