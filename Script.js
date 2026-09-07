@@ -4,106 +4,204 @@ let gameOver = false;
 let time = 30;
 let timer;
 let lastGameMode = "";
-let questionsAnswered = 0;
-
-const bgMusic = document.getElementById("bgMusic");
-const bonusMessage = document.getElementById("bonusMessage");
-const homeScreen = document.getElementById("homeScreen");
-const soloMenu = document.getElementById("soloMenu");
-const gameScreen = document.getElementById("gameScreen");
-const versusMenu = document.getElementById("versusMenu");
-const versusScreen = document.getElementById("versusScreen");
-const gameOverScreen = document.getElementById("gameOverScreen");
-const leaderboardScreen = document.getElementById("leaderboardScreen");
-
-const btnSolo = document.getElementById("btnSolo");
-const btnVersus = document.getElementById("btnVersus");
-const btn30 = document.getElementById("btn30");
-const btn60 = document.getElementById("btn60");
-const btnVersusStart = document.getElementById("btnVersusStart");
-
-const backFromSolo = document.getElementById("backFromSolo");
-const backFromVersus = document.getElementById("backFromVersus");
-const backToHome = document.getElementById("backToHome");
-const backToHomeFromGameOver =
-    document.getElementById("backToHomeFromGameOver");
-
-const scoreElement = document.getElementById("score");
-const timerElement = document.getElementById("timer");
-const comboElement = document.getElementById("combo");
-const questionElement = document.getElementById("question");
-const choicesElement = document.getElementById("choices");
-
-const finalScore = document.getElementById("finalScore");
-const playerName = document.getElementById("playerName");
-const saveScore = document.getElementById("saveScore");
-const soloSaveArea = document.getElementById("soloSaveArea");
-
-const leaderboard = document.getElementById("leaderboard");
-const homeLeaderboard = document.getElementById("homeLeaderboard");
-const gameLeaderboardList =
-    document.getElementById("gameLeaderboardList");
-
-const playAgain = document.getElementById("playAgain");
-
-const player1ScoreElement =
-    document.getElementById("player1Score");
-
-const player2ScoreElement =
-    document.getElementById("player2Score");
-
-const player1Question =
-    document.getElementById("player1Question");
-
-const player2Question =
-    document.getElementById("player2Question");
-
-const player1Choices =
-    document.getElementById("player1Choices");
-
-const player2Choices =
-    document.getElementById("player2Choices");
+let currentDuration = 30;
 
 let player1Score = 0;
 let player2Score = 0;
 let versusRunning = false;
 
 
+const bgMusic =
+    document.getElementById("bgMusic");
+
+
+const homeScreen =
+    document.getElementById("homeScreen");
+
+const soloMenu =
+    document.getElementById("soloMenu");
+
+const gameScreen =
+    document.getElementById("gameScreen");
+
+const versusMenu =
+    document.getElementById("versusMenu");
+
+const versusScreen =
+    document.getElementById("versusScreen");
+
+const gameOverScreen =
+    document.getElementById("gameOverScreen");
+
+const leaderboardScreen =
+    document.getElementById("leaderboardScreen");
+
+
+const btnSolo =
+    document.getElementById("btnSolo");
+
+const btnVersus =
+    document.getElementById("btnVersus");
+
+const btn30 =
+    document.getElementById("btn30");
+
+const btn60 =
+    document.getElementById("btn60");
+
+const btnVersusStart =
+    document.getElementById("btnVersusStart");
+
+const backFromSolo =
+    document.getElementById("backFromSolo");
+
+const backFromVersus =
+    document.getElementById("backFromVersus");
+
+const backToHome =
+    document.getElementById("backToHome");
+
+const backToHomeFromGameOver =
+    document.getElementById(
+        "backToHomeFromGameOver"
+    );
+
+
+const scoreElement =
+    document.getElementById("score");
+
+const timerElement =
+    document.getElementById("timer");
+
+const comboElement =
+    document.getElementById("combo");
+
+const questionElement =
+    document.getElementById("question");
+
+const choicesElement =
+    document.getElementById("choices");
+
+const bonusMessage =
+    document.getElementById("bonusMessage");
+
+const finalScore =
+    document.getElementById("finalScore");
+
+const playerName =
+    document.getElementById("playerName");
+
+const saveScore =
+    document.getElementById("saveScore");
+
+const soloSaveArea =
+    document.getElementById("soloSaveArea");
+
+const playAgain =
+    document.getElementById("playAgain");
+
+
+const homeLeaderboard30 =
+    document.getElementById(
+        "homeLeaderboard30"
+    );
+
+const homeLeaderboard60 =
+    document.getElementById(
+        "homeLeaderboard60"
+    );
+
+
+const gameLeaderboardList =
+    document.getElementById(
+        "gameLeaderboardList"
+    );
+
+const gameLeaderboardTitle =
+    document.getElementById(
+        "gameLeaderboardTitle"
+    );
+
+
+const leaderboard =
+    document.getElementById("leaderboard");
+
+
+const player1ScoreElement =
+    document.getElementById(
+        "player1Score"
+    );
+
+const player2ScoreElement =
+    document.getElementById(
+        "player2Score"
+    );
+
+const player1Question =
+    document.getElementById(
+        "player1Question"
+    );
+
+const player2Question =
+    document.getElementById(
+        "player2Question"
+    );
+
+const player1Choices =
+    document.getElementById(
+        "player1Choices"
+    );
+
+const player2Choices =
+    document.getElementById(
+        "player2Choices"
+    );
+
+
 function hideAllScreens() {
+
     homeScreen.style.display = "none";
+
     soloMenu.style.display = "none";
+
     gameScreen.style.display = "none";
+
     versusMenu.style.display = "none";
+
     versusScreen.style.display = "none";
+
     gameOverScreen.style.display = "none";
+
     leaderboardScreen.style.display = "none";
 }
 
 
 function playMusic() {
+
     if (!bgMusic) {
         return;
     }
 
     bgMusic.currentTime = 0;
 
-    bgMusic.play().catch(error => {
-        console.log("Music error:", error);
-    });
+    bgMusic.play().catch(() => {});
 }
 
 
 function stopMusic() {
+
     if (!bgMusic) {
         return;
     }
 
     bgMusic.pause();
+
     bgMusic.currentTime = 0;
 }
 
 
 function showHome() {
+
     clearInterval(timer);
 
     versusRunning = false;
@@ -114,7 +212,7 @@ function showHome() {
 
     homeScreen.style.display = "flex";
 
-    showHomeLeaderboard();
+    showHomeLeaderboards();
 }
 
 
@@ -139,18 +237,29 @@ btnVersus.addEventListener("click", () => {
 
 
 backFromSolo.addEventListener("click", () => {
+
     showHome();
 });
 
 
 backFromVersus.addEventListener("click", () => {
+
     showHome();
 });
 
 
 backToHome.addEventListener("click", () => {
+
     showHome();
 });
+
+
+backToHomeFromGameOver.addEventListener(
+    "click",
+    () => {
+        showHome();
+    }
+);
 
 
 function generateQuestion() {
@@ -159,14 +268,21 @@ function generateQuestion() {
     let number2;
     let operator;
 
-    const operators = ["+", "*", "-", "/"];
+    const operators = [
+        "+",
+        "*",
+        "-",
+        "/"
+    ];
 
     operator =
         operators[
             Math.floor(
-                Math.random() * operators.length
+                Math.random() *
+                operators.length
             )
         ];
+
 
     if (operator === "/") {
 
@@ -180,7 +296,8 @@ function generateQuestion() {
                 Math.random() * 10
             ) + 1;
 
-        number1 = number2 * result;
+        number1 =
+            number2 * result;
 
     } else {
 
@@ -198,33 +315,43 @@ function generateQuestion() {
 
     let answer;
 
+
     if (operator === "+") {
 
-        answer = number1 + number2;
+        answer =
+            number1 + number2;
 
     } else if (operator === "*") {
 
-        answer = number1 * number2;
+        answer =
+            number1 * number2;
 
     } else if (operator === "-") {
 
-        answer = number1 - number2;
+        answer =
+            number1 - number2;
 
     } else {
 
-        answer = number1 / number2;
+        answer =
+            number1 / number2;
     }
 
 
     let wrongAnswer1;
 
+
     do {
 
         wrongAnswer1 =
             answer +
-            Math.floor(Math.random() * 40) +
+            Math.floor(
+                Math.random() * 40
+            ) +
             1 -
-            Math.floor(Math.random() * 40) -
+            Math.floor(
+                Math.random() * 40
+            ) -
             1;
 
     } while (
@@ -235,13 +362,18 @@ function generateQuestion() {
 
     let wrongAnswer2;
 
+
     do {
 
         wrongAnswer2 =
             answer +
-            Math.floor(Math.random() * 40) +
+            Math.floor(
+                Math.random() * 40
+            ) +
             1 -
-            Math.floor(Math.random() * 40) -
+            Math.floor(
+                Math.random() * 40
+            ) -
             1;
 
     } while (
@@ -256,6 +388,7 @@ function generateQuestion() {
         wrongAnswer1,
         wrongAnswer2
     ];
+
 
     choices.sort(
         () => Math.random() - 0.5
@@ -276,105 +409,138 @@ function showQuestion(question) {
 
     choicesElement.innerHTML = "";
 
+
     questionElement.textContent =
         `${question.number1} ${question.operator} ${question.number2} = ?`;
+
 
     question.choices.forEach(choice => {
 
         const button =
             document.createElement("button");
 
+
         button.textContent = choice;
 
-        button.addEventListener("click", () => {
 
-            if (gameOver) {
-                return;
-            }
+        button.addEventListener(
+            "click",
+            () => {
 
-            const buttons =
-                choicesElement.querySelectorAll("button");
+                if (gameOver) {
+                    return;
+                }
 
-            buttons.forEach(btn => {
-                btn.disabled = true;
-            });
 
-            questionsAnswered++;
+                const buttons =
+                    choicesElement.querySelectorAll(
+                        "button"
+                    );
 
-            if (choice === question.answer) {
 
-                button.classList.add("correct");
+                buttons.forEach(btn => {
+                    btn.disabled = true;
+                });
 
-                combo++;
 
-                if (combo >= 10) {
+                if (choice === question.answer) {
 
-                    score += 3;
+                    button.classList.add(
+                        "correct"
+                    );
 
-                    if (combo === 10) {
-                        showBonus("⚡ COMBO 10! +3 SCORE");
+
+                    combo++;
+
+
+                    if (combo >= 10) {
+
+                        score += 3;
+
+
+                        if (combo === 10) {
+
+                            showBonus(
+                                "⚡ COMBO 10! +3 SCORE"
+                            );
+                        }
+
+                    } else if (combo >= 5) {
+
+                        score += 2;
+
+
+                        if (combo === 5) {
+
+                            showBonus(
+                                "🔥 COMBO 5! +2 SCORE"
+                            );
+                        }
+
+                    } else {
+
+                        score += 1;
                     }
 
-                } else if (combo >= 5) {
 
-                    score += 2;
+                    scoreElement.textContent =
+                        `Score: ${score}`;
 
-                    if (combo === 5) {
-                        showBonus("🔥 COMBO 5! +2 SCORE");
-                    }
+
+                    updateCombo();
+
+
+                    setTimeout(() => {
+
+                        if (!gameOver) {
+
+                            showQuestion(
+                                generateQuestion()
+                            );
+                        }
+
+                    }, 100);
+
 
                 } else {
 
-                    score += 1;
-                }
-
-                scoreElement.textContent =
-                    `Score: ${score}`;
-
-                updateCombo();
-
-                setTimeout(() => {
-
-                    if (!gameOver) {
-
-                        showQuestion(
-                            generateQuestion()
-                        );
-                    }
-
-                }, 100);
-
-            } else {
-
-                button.classList.add("wrong");
-
-                score =
-                    Math.max(
-                        0,
-                        score - 1
+                    button.classList.add(
+                        "wrong"
                     );
 
-                combo = 0;
 
-                scoreElement.textContent =
-                    `Score: ${score}`;
-
-                comboElement.textContent =
-                    `🔥 Combo: 0`;
-
-                setTimeout(() => {
-
-                    if (!gameOver) {
-
-                        showQuestion(
-                            generateQuestion()
+                    score =
+                        Math.max(
+                            0,
+                            score - 1
                         );
-                    }
 
-                }, 500);
+
+                    combo = 0;
+
+
+                    scoreElement.textContent =
+                        `Score: ${score}`;
+
+
+                    comboElement.textContent =
+                        "🔥 Combo: 0";
+
+
+                    setTimeout(() => {
+
+                        if (!gameOver) {
+
+                            showQuestion(
+                                generateQuestion()
+                            );
+                        }
+
+                    }, 500);
+                }
             }
+        );
 
-        });
 
         choicesElement.appendChild(button);
     });
@@ -383,38 +549,65 @@ function showQuestion(question) {
 
 function startGame(duration) {
 
-    questionsAnswered = 0;
-
     clearInterval(timer);
+
 
     lastGameMode = "solo";
 
+    currentDuration = duration;
+
+
     score = 0;
+
     combo = 0;
+
     time = duration;
+
     gameOver = false;
 
-    timerElement.classList.remove("warning");
+
+    timerElement.classList.remove(
+        "warning"
+    );
+
 
     hideAllScreens();
 
-    gameScreen.style.display = "block";
+    gameScreen.style.display = "flex";
+
 
     if (bgMusic && bgMusic.paused) {
-        bgMusic.play().catch(error => {
-            console.log("Music error:", error);
-        });
+
+        bgMusic.play().catch(() => {});
     }
 
-    soloSaveArea.style.display = "block";
 
-    scoreElement.textContent = "Score: 0";
-    comboElement.textContent = "🔥 Combo: 0";
-    timerElement.textContent = `Time: ${time}`;
+    soloSaveArea.style.display = "none";
+
+
+    scoreElement.textContent =
+        "Score: 0";
+
+
+    timerElement.textContent =
+        `Time: ${time}`;
+
+
+    comboElement.textContent =
+        "🔥 Combo: 0";
+
+
+    bonusMessage.classList.remove(
+        "show"
+    );
+
+    bonusMessage.textContent = "";
+
 
     showQuestion(
         generateQuestion()
     );
+
 
     showGameLeaderboard();
 
@@ -423,15 +616,20 @@ function startGame(duration) {
 
         time--;
 
+
         timerElement.textContent =
             `Time: ${time}`;
 
 
         if (time <= 5 && time > 0) {
 
-            timerElement.classList.add("warning");
+            timerElement.classList.add(
+                "warning"
+            );
+
 
             if (navigator.vibrate) {
+
                 navigator.vibrate(150);
             }
 
@@ -447,19 +645,29 @@ function startGame(duration) {
 
             clearInterval(timer);
 
+
             timerElement.classList.remove(
                 "warning"
             );
 
+
             gameOver = true;
+
 
             stopMusic();
 
-            gameScreen.style.display = "none";
 
-            gameOverScreen.style.display = "flex";
+            gameScreen.style.display =
+                "none";
 
-            soloSaveArea.style.display = "flex";
+
+            gameOverScreen.style.display =
+                "flex";
+
+
+            soloSaveArea.style.display =
+                "flex";
+
 
             finalScore.textContent =
                 `Score: ${score}`;
@@ -470,72 +678,191 @@ function startGame(duration) {
 
 
 btn30.addEventListener("click", () => {
+
     startGame(30);
 });
 
 
 btn60.addEventListener("click", () => {
+
     startGame(60);
 });
 
 
-saveScore.addEventListener("click", () => {
+function getStorageKey() {
 
-    const name =
-        playerName.value.trim();
+    if (currentDuration === 30) {
 
-    if (name === "") {
-        return;
+        return "scores30";
     }
 
-    let scores =
-        JSON.parse(
-            localStorage.getItem("scores")
-        ) || [];
+    return "scores60";
+}
 
-    scores.push({
-        name: name,
-        score: score
-    });
 
-    scores.sort(
-        (a, b) =>
-            b.score - a.score
-    );
+saveScore.addEventListener(
+    "click",
+    () => {
 
-    scores =
-        scores.slice(0, 10);
+        const name =
+            playerName.value.trim();
 
-    localStorage.setItem(
-        "scores",
-        JSON.stringify(scores)
-    );
 
-    showLeaderboard();
-});
+        if (name === "") {
+            return;
+        }
+
+
+        const storageKey =
+            getStorageKey();
+
+
+        let scores =
+            JSON.parse(
+                localStorage.getItem(
+                    storageKey
+                )
+            ) || [];
+
+
+        scores.push({
+            name: name,
+            score: score
+        });
+
+
+        scores.sort(
+            (a, b) =>
+                b.score - a.score
+        );
+
+
+        scores =
+            scores.slice(0, 10);
+
+
+        localStorage.setItem(
+            storageKey,
+            JSON.stringify(scores)
+        );
+
+
+        playerName.value = "";
+
+
+        showLeaderboard();
+    }
+);
+
+
+function getScores(duration) {
+
+    const key =
+        duration === 30
+            ? "scores30"
+            : "scores60";
+
+
+    return JSON.parse(
+        localStorage.getItem(key)
+    ) || [];
+}
+
+
+function showHomeLeaderboards() {
+
+    homeLeaderboard30.innerHTML = "";
+
+    homeLeaderboard60.innerHTML = "";
+
+
+    const scores30 =
+        getScores(30);
+
+    const scores60 =
+        getScores(60);
+
+
+    scores30
+        .slice(0, 5)
+        .forEach(
+            (player, index) => {
+
+                const li =
+                    document.createElement(
+                        "li"
+                    );
+
+
+                li.textContent =
+                    `${index + 1}. ${player.name} - ${player.score}`;
+
+
+                homeLeaderboard30.appendChild(
+                    li
+                );
+            }
+        );
+
+
+    scores60
+        .slice(0, 5)
+        .forEach(
+            (player, index) => {
+
+                const li =
+                    document.createElement(
+                        "li"
+                    );
+
+
+                li.textContent =
+                    `${index + 1}. ${player.name} - ${player.score}`;
+
+
+                homeLeaderboard60.appendChild(
+                    li
+                );
+            }
+        );
+}
 
 
 function showGameLeaderboard() {
 
     gameLeaderboardList.innerHTML = "";
 
+
     const scores =
-        JSON.parse(
-            localStorage.getItem("scores")
-        ) || [];
+        getScores(currentDuration);
+
+
+    gameLeaderboardTitle.textContent =
+        currentDuration === 30
+            ? "🏆 30 SEC LEADERBOARD"
+            : "⚡ 60 SEC LEADERBOARD";
+
 
     scores
         .slice(0, 5)
-        .forEach(player => {
+        .forEach(
+            (player, index) => {
 
-            const li =
-                document.createElement("li");
+                const li =
+                    document.createElement(
+                        "li"
+                    );
 
-            li.textContent =
-                `${player.name} - ${player.score}`;
 
-            gameLeaderboardList.appendChild(li);
-        });
+                li.textContent =
+                    `${player.name} - ${player.score}`;
+
+
+                gameLeaderboardList.appendChild(
+                    li
+                );
+            }
+        );
 }
 
 
@@ -543,57 +870,106 @@ function showLeaderboard() {
 
     hideAllScreens();
 
+
     leaderboardScreen.style.display =
         "flex";
 
+
     leaderboard.innerHTML = "";
 
+
     const scores =
-        JSON.parse(
-            localStorage.getItem("scores")
-        ) || [];
+        getScores(currentDuration);
 
-    scores.forEach(player => {
 
-        const li =
-            document.createElement("li");
+    scores.forEach(
+        (player, index) => {
 
-        li.textContent =
-            `${player.name} - ${player.score}`;
+            const li =
+                document.createElement(
+                    "li"
+                );
 
-        leaderboard.appendChild(li);
-    });
+
+            li.textContent =
+                `${index + 1}. ${player.name} - ${player.score}`;
+
+
+            leaderboard.appendChild(li);
+        }
+    );
 }
 
 
-btnVersusStart.addEventListener("click", () => {
+playAgain.addEventListener(
+    "click",
+    () => {
 
-    startVersusGame();
-});
+        if (lastGameMode === "solo") {
+
+            hideAllScreens();
+
+            soloMenu.style.display =
+                "flex";
+
+            return;
+        }
+
+
+        if (lastGameMode === "versus") {
+
+            startVersusGame();
+        }
+    }
+);
+
+
+btnVersusStart.addEventListener(
+    "click",
+    () => {
+
+        startVersusGame();
+    }
+);
 
 
 function startVersusGame() {
 
     clearInterval(timer);
 
+
     lastGameMode = "versus";
 
+
     player1Score = 0;
+
     player2Score = 0;
+
 
     versusRunning = true;
 
+
     hideAllScreens();
 
-    versusScreen.style.display = "flex";
 
-    soloSaveArea.style.display = "none";
+    versusScreen.style.display =
+        "flex";
+
+
+    soloSaveArea.style.display =
+        "none";
+
+
+    playMusic();
+
 
     player1ScoreElement.textContent =
         "Score: 0";
 
+
     player2ScoreElement.textContent =
         "Score: 0";
+
 
     showVersusQuestion(
         generateQuestion()
@@ -606,11 +982,15 @@ function showVersusQuestion(question) {
     player1Question.textContent =
         `${question.number1} ${question.operator} ${question.number2} = ?`;
 
+
     player2Question.textContent =
         `${question.number1} ${question.operator} ${question.number2} = ?`;
 
+
     player1Choices.innerHTML = "";
+
     player2Choices.innerHTML = "";
+
 
     let answered = false;
 
@@ -621,8 +1001,10 @@ function showVersusQuestion(question) {
             !versusRunning ||
             answered
         ) {
+
             return;
         }
+
 
         answered = true;
 
@@ -633,12 +1015,14 @@ function showVersusQuestion(question) {
 
                 player1Score++;
 
+
                 player1ScoreElement.textContent =
                     `Score: ${player1Score}`;
 
             } else {
 
                 player2Score++;
+
 
                 player2ScoreElement.textContent =
                     `Score: ${player2Score}`;
@@ -650,12 +1034,14 @@ function showVersusQuestion(question) {
 
                 player2Score++;
 
+
                 player2ScoreElement.textContent =
                     `Score: ${player2Score}`;
 
             } else {
 
                 player1Score++;
+
 
                 player1ScoreElement.textContent =
                     `Score: ${player1Score}`;
@@ -690,31 +1076,55 @@ function showVersusQuestion(question) {
     question.choices.forEach(choice => {
 
         const button1 =
-            document.createElement("button");
+            document.createElement(
+                "button"
+            );
+
 
         button1.textContent = choice;
 
-        button1.addEventListener("click", () => {
 
-            checkAnswer(choice, 1);
+        button1.addEventListener(
+            "click",
+            () => {
 
-        });
+                checkAnswer(
+                    choice,
+                    1
+                );
+            }
+        );
 
-        player1Choices.appendChild(button1);
+
+        player1Choices.appendChild(
+            button1
+        );
 
 
         const button2 =
-            document.createElement("button");
+            document.createElement(
+                "button"
+            );
+
 
         button2.textContent = choice;
 
-        button2.addEventListener("click", () => {
 
-            checkAnswer(choice, 2);
+        button2.addEventListener(
+            "click",
+            () => {
 
-        });
+                checkAnswer(
+                    choice,
+                    2
+                );
+            }
+        );
 
-        player2Choices.appendChild(button2);
+
+        player2Choices.appendChild(
+            button2
+        );
     });
 }
 
@@ -724,6 +1134,7 @@ function updateCombo() {
     comboElement.textContent =
         `🔥 Combo: ${combo}`;
 
+
     if (
         combo > 0 &&
         combo % 5 === 0
@@ -731,11 +1142,44 @@ function updateCombo() {
 
         time += 3;
 
+
         timerElement.textContent =
             `Time: ${time}`;
 
-        showBonus(`🔥 COMBO ${combo}! +3 SECONDS`);
+
+        showBonus(
+            `🔥 COMBO ${combo}! +3 SECONDS`
+        );
     }
+}
+
+
+function showBonus(message) {
+
+    bonusMessage.textContent =
+        message;
+
+
+    bonusMessage.classList.remove(
+        "show"
+    );
+
+
+    void bonusMessage.offsetWidth;
+
+
+    bonusMessage.classList.add(
+        "show"
+    );
+
+
+    setTimeout(() => {
+
+        bonusMessage.classList.remove(
+            "show"
+        );
+
+    }, 1000);
 }
 
 
@@ -743,13 +1187,20 @@ function endVersusGame() {
 
     versusRunning = false;
 
+
     stopMusic();
 
-    versusScreen.style.display = "none";
 
-    gameOverScreen.style.display = "flex";
+    versusScreen.style.display =
+        "none";
 
-    soloSaveArea.style.display = "none";
+
+    gameOverScreen.style.display =
+        "flex";
+
+
+    soloSaveArea.style.display =
+        "none";
 
 
     if (player1Score >= 10) {
@@ -764,69 +1215,5 @@ function endVersusGame() {
     }
 }
 
-
-function showHomeLeaderboard() {
-
-    homeLeaderboard.innerHTML = "";
-
-    const scores =
-        JSON.parse(
-            localStorage.getItem("scores")
-        ) || [];
-
-    scores
-        .slice(0, 5)
-        .forEach(player => {
-
-            const li =
-                document.createElement("li");
-
-            li.textContent =
-                `${player.name} - ${player.score}`;
-
-            homeLeaderboard.appendChild(li);
-        });
-}
-
-
-playAgain.addEventListener("click", () => {
-
-    playerName.value = "";
-
-    if (lastGameMode === "solo") {
-
-        hideAllScreens();
-
-        soloMenu.style.display = "flex";
-
-    } else {
-
-        startVersusGame();
-    }
-});
-
-
-backToHomeFromGameOver.addEventListener(
-    "click",
-    () => {
-
-        playerName.value = "";
-
-        showHome();
-    }
-);
-
-function showBonus(message) {
-    bonusMessage.textContent = message;
-    bonusMessage.classList.remove("show");
-
-    void bonusMessage.offsetWidth;
-
-    bonusMessage.classList.add("show");
-
-    setTimeout(() => {
-        bonusMessage.classList.remove("show");
-    }, 1200);
-}
 
 showHome();
