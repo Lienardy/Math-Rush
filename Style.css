@@ -92,9 +92,6 @@ body {
 }
 
 
-/* =========================
-   BUTTON
-========================= */
 
 button {
     width: 100%;
@@ -130,6 +127,7 @@ button:active {
 button:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+    color: #ff0000;
 }
 
 
@@ -166,9 +164,6 @@ button:disabled {
 }
 
 
-/* =========================
-   SOLO GAME
-========================= */
 
 #gameScreen {
     position: relative;
@@ -249,9 +244,6 @@ button:disabled {
 }
 
 
-/* =========================
-   GAME LEADERBOARD
-========================= */
 
 #gameLeaderboard {
     position: absolute;
@@ -377,9 +369,6 @@ button:disabled {
 }
 
 
-/* =========================
-   GAME OVER
-========================= */
 
 #gameOverScreen {
     display: none;
@@ -405,10 +394,6 @@ button:disabled {
     color: #60a5fa;
 }
 
-
-/* =========================
-   NAME INPUT
-========================= */
 
 #soloSaveArea {
     display: flex;
@@ -456,10 +441,6 @@ button:disabled {
 }
 
 
-/* =========================
-   GAME OVER BUTTONS
-========================= */
-
 #gameOverButtons {
     display: flex;
     flex-direction: column;
@@ -477,10 +458,6 @@ button:disabled {
     margin: 0;
 }
 
-
-/* =========================
-   LEADERBOARD PAGE
-========================= */
 
 #leaderboardScreen {
     display: none;
@@ -525,11 +502,6 @@ button:disabled {
 #leaderboard li:last-child {
     border-bottom: none;
 }
-
-
-/* =========================
-   MOBILE
-========================= */
 
 @media (max-width: 768px) {
 
