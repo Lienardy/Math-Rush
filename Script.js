@@ -927,4 +927,14 @@ backToHomeFromGameOver.addEventListener(
 );
 
 
+function bonus() {
+    if (combo >= 5) {
+        score += 2;
+        combo = 0;
+        scoreElement.textContent = `Score: ${score}`;
+        comboElement.textContent = `🔥 Combo: ${combo}`;
+    }
+}
+
+
 showHome();
