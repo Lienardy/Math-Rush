@@ -576,11 +576,6 @@ button:disabled {
     }
 }
 
-#choices button.correct {
-    background: #22c55e;
-    border-color: #22c55e;
-    transform: scale(1.03);
-}
 
 #choices button.wrong {
     background: #ef4444;
