@@ -367,7 +367,9 @@ function showQuestion(question) {
 
             if (choice === question.answer) {
                 button.classList.add("correct");
-                if(combo >= 5) {
+                if(combo >= 10) {
+                    score += 3;
+                } else if(combo >= 5 && combo < 10) {
                     score += 2;
                 } else{
                     score++;
