@@ -1,3 +1,13 @@
+const SUPABASE_URL = "https://zytplmwkwplrddmgqshn.supabase.co";
+const SUPABASE_KEY = "sb_publishable_xwADdEri8ioRMQvRyi8Z5g_9LqScOp9";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
 let score = 0;
 let combo = 0;
 let gameOver = false;
@@ -11,9 +21,17 @@ let player2Score = 0;
 let versusRunning = false;
 
 
+/* =========================
+   AUDIO
+========================= */
+
 const bgMusic =
     document.getElementById("bgMusic");
 
+
+/* =========================
+   SCREENS
+========================= */
 
 const homeScreen =
     document.getElementById("homeScreen");
@@ -36,6 +54,10 @@ const gameOverScreen =
 const leaderboardScreen =
     document.getElementById("leaderboardScreen");
 
+
+/* =========================
+   BUTTONS
+========================= */
 
 const btnSolo =
     document.getElementById("btnSolo");
@@ -66,6 +88,10 @@ const backToHomeFromGameOver =
         "backToHomeFromGameOver"
     );
 
+
+/* =========================
+   SOLO ELEMENTS
+========================= */
 
 const scoreElement =
     document.getElementById("score");
@@ -101,6 +127,10 @@ const playAgain =
     document.getElementById("playAgain");
 
 
+/* =========================
+   LEADERBOARD ELEMENTS
+========================= */
+
 const homeLeaderboard30 =
     document.getElementById(
         "homeLeaderboard30"
@@ -110,7 +140,6 @@ const homeLeaderboard60 =
     document.getElementById(
         "homeLeaderboard60"
     );
-
 
 const gameLeaderboardList =
     document.getElementById(
@@ -122,10 +151,13 @@ const gameLeaderboardTitle =
         "gameLeaderboardTitle"
     );
 
-
 const leaderboard =
     document.getElementById("leaderboard");
 
+
+/* =========================
+   VERSUS ELEMENTS
+========================= */
 
 const player1ScoreElement =
     document.getElementById(
@@ -158,23 +190,148 @@ const player2Choices =
     );
 
 
-function hideAllScreens() {
+/* =========================================================
+   SUPABASE LEADERBOARD
+========================================================= */
 
-    homeScreen.style.display = "none";
 
-    soloMenu.style.display = "none";
+/* =========================
+   GET ONLINE LEADERBOARD
+========================= */
 
-    gameScreen.style.display = "none";
+async function getOnlineLeaderboard(
+    gameMode
+) {
 
-    versusMenu.style.display = "none";
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("leaderboard")
+            .select(
+                "player_name, score, game_mode, created_at"
+            )
+            .eq(
+                "game_mode",
+                gameMode
+            )
+            .order(
+                "score",
+                {
+                    ascending: false
+                }
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: true
+                }
+            )
+            .limit(10);
 
-    versusScreen.style.display = "none";
 
-    gameOverScreen.style.display = "none";
+    if (error) {
 
-    leaderboardScreen.style.display = "none";
+        console.error(
+            "Gagal mengambil leaderboard:",
+            error
+        );
+
+        return [];
+
+    }
+
+
+    return data || [];
 }
 
+
+/* =========================
+   SUBMIT ONLINE SCORE
+========================= */
+
+async function submitOnlineScore(
+    playerName,
+    score,
+    gameMode
+) {
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("leaderboard")
+            .insert({
+
+                player_name:
+                    playerName,
+
+                score:
+                    score,
+
+                game_mode:
+                    gameMode
+
+            })
+            .select();
+
+
+    if (error) {
+
+        console.error(
+            "Gagal mengirim skor:",
+            error
+        );
+
+        return false;
+
+    }
+
+
+    console.log(
+        "Skor berhasil dikirim:",
+        data
+    );
+
+
+    return true;
+}
+
+
+/* =========================================================
+   SCREEN CONTROL
+========================================================= */
+
+function hideAllScreens() {
+
+    homeScreen.style.display =
+        "none";
+
+    soloMenu.style.display =
+        "none";
+
+    gameScreen.style.display =
+        "none";
+
+    versusMenu.style.display =
+        "none";
+
+    versusScreen.style.display =
+        "none";
+
+    gameOverScreen.style.display =
+        "none";
+
+    leaderboardScreen.style.display =
+        "none";
+}
+
+
+/* =========================================================
+   MUSIC
+========================================================= */
 
 function playMusic() {
 
@@ -182,9 +339,14 @@ function playMusic() {
         return;
     }
 
+
     bgMusic.currentTime = 0;
 
-    bgMusic.play().catch(() => {});
+
+    bgMusic
+        .play()
+        .catch(() => {});
+
 }
 
 
@@ -194,13 +356,19 @@ function stopMusic() {
         return;
     }
 
+
     bgMusic.pause();
 
     bgMusic.currentTime = 0;
+
 }
 
 
-function showHome() {
+/* =========================================================
+   HOME
+========================================================= */
+
+async function showHome() {
 
     clearInterval(timer);
 
@@ -210,48 +378,77 @@ function showHome() {
 
     hideAllScreens();
 
-    homeScreen.style.display = "flex";
+    homeScreen.style.display =
+        "flex";
 
-    showHomeLeaderboards();
+
+    await showHomeLeaderboards();
+
 }
 
 
-btnSolo.addEventListener("click", () => {
+/* =========================================================
+   HOME BUTTONS
+========================================================= */
 
-    playMusic();
+btnSolo.addEventListener(
+    "click",
+    () => {
 
-    hideAllScreens();
+        playMusic();
 
-    soloMenu.style.display = "flex";
-});
+        hideAllScreens();
 
+        soloMenu.style.display =
+            "flex";
 
-btnVersus.addEventListener("click", () => {
-
-    playMusic();
-
-    hideAllScreens();
-
-    versusMenu.style.display = "flex";
-});
-
-
-backFromSolo.addEventListener("click", () => {
-
-    showHome();
-});
+    }
+);
 
 
-backFromVersus.addEventListener("click", () => {
+btnVersus.addEventListener(
+    "click",
+    () => {
 
-    showHome();
-});
+        playMusic();
+
+        hideAllScreens();
+
+        versusMenu.style.display =
+            "flex";
+
+    }
+);
 
 
-backToHome.addEventListener("click", () => {
+backFromSolo.addEventListener(
+    "click",
+    () => {
 
-    showHome();
-});
+        showHome();
+
+    }
+);
+
+
+backFromVersus.addEventListener(
+    "click",
+    () => {
+
+        showHome();
+
+    }
+);
+
+
+backToHome.addEventListener(
+    "click",
+    () => {
+
+        showHome();
+
+    }
+);
 
 
 backToHomeFromGameOver.addEventListener(
@@ -259,15 +456,23 @@ backToHomeFromGameOver.addEventListener(
     () => {
 
         showHome();
+
     }
 );
 
 
+/* =========================================================
+   QUESTION GENERATOR
+========================================================= */
+
 function generateQuestion() {
 
     let number1;
+
     let number2;
+
     let operator;
+
 
     const operators = [
         "+",
@@ -286,7 +491,13 @@ function generateQuestion() {
         ];
 
 
-    if (operator === "/") {
+    /* =========================
+       DIVISION
+    ========================= */
+
+    if (
+        operator === "/"
+    ) {
 
         number2 =
             Math.floor(
@@ -303,6 +514,7 @@ function generateQuestion() {
         number1 =
             number2 * result;
 
+
     } else {
 
         number1 =
@@ -315,23 +527,30 @@ function generateQuestion() {
             Math.floor(
                 Math.random() * 50
             ) + 1;
+
     }
 
 
     let answer;
 
 
-    if (operator === "+") {
+    if (
+        operator === "+"
+    ) {
 
         answer =
             number1 + number2;
 
-    } else if (operator === "*") {
+    } else if (
+        operator === "*"
+    ) {
 
         answer =
             number1 * number2;
 
-    } else if (operator === "-") {
+    } else if (
+        operator === "-"
+    ) {
 
         answer =
             number1 - number2;
@@ -340,8 +559,13 @@ function generateQuestion() {
 
         answer =
             number1 / number2;
+
     }
 
+
+    /* =========================
+       WRONG ANSWER 1
+    ========================= */
 
     let wrongAnswer1;
 
@@ -360,10 +584,16 @@ function generateQuestion() {
             1;
 
     } while (
+
         wrongAnswer1 === answer ||
         wrongAnswer1 < 0
+
     );
 
+
+    /* =========================
+       WRONG ANSWER 2
+    ========================= */
 
     let wrongAnswer2;
 
@@ -382,196 +612,279 @@ function generateQuestion() {
             1;
 
     } while (
+
         wrongAnswer2 === answer ||
         wrongAnswer2 === wrongAnswer1 ||
         wrongAnswer2 < 0
+
     );
 
 
     const choices = [
+
         answer,
+
         wrongAnswer1,
+
         wrongAnswer2
+
     ];
 
 
     choices.sort(
-        () => Math.random() - 0.5
+        () =>
+            Math.random() - 0.5
     );
 
 
     return {
+
         number1,
+
         number2,
+
         operator,
+
         answer,
+
         choices
+
     };
+
 }
 
 
-function showQuestion(question) {
+/* =========================================================
+   SHOW QUESTION
+========================================================= */
 
-    choicesElement.innerHTML = "";
+function showQuestion(
+    question
+) {
+
+    choicesElement.innerHTML =
+        "";
 
 
     questionElement.textContent =
         `${question.number1} ${question.operator} ${question.number2} = ?`;
 
 
-    question.choices.forEach(choice => {
+    question.choices.forEach(
+        choice => {
 
-        const button =
-            document.createElement(
-                "button"
-            );
-
-
-        button.textContent = choice;
+            const button =
+                document.createElement(
+                    "button"
+                );
 
 
-        button.addEventListener(
-            "click",
-            () => {
-
-                if (gameOver) {
-                    return;
-                }
+            button.textContent =
+                choice;
 
 
-                const buttons =
-                    choicesElement.querySelectorAll(
-                        "button"
-                    );
+            button.addEventListener(
+                "click",
+                () => {
 
+                    if (
+                        gameOver
+                    ) {
 
-                buttons.forEach(btn => {
-                    btn.disabled = true;
-                });
+                        return;
 
-
-                if (choice === question.answer) {
-
-                    button.classList.add(
-                        "correct"
-                    );
-
-
-                    combo++;
-
-
-                    if (combo >= 10) {
-
-                        score += 3;
-
-
-                        if (combo === 10) {
-
-                            showBonus(
-                                "⚡ COMBO 10! +3 SCORE"
-                            );
-                        }
-
-                    } else if (combo >= 5) {
-
-                        score += 2;
-
-
-                        if (combo === 5) {
-
-                            showBonus(
-                                "🔥 COMBO 5! +2 SCORE"
-                            );
-                        }
-
-                    } else {
-
-                        score += 1;
                     }
 
 
-                    scoreElement.textContent =
-                        `Score: ${score}`;
-
-
-                    updateCombo();
-
-
-                    setTimeout(() => {
-
-                        if (!gameOver) {
-
-                            showQuestion(
-                                generateQuestion()
-                            );
-                        }
-
-                    }, 100);
-
-                } else {
-
-                    button.classList.add(
-                        "wrong"
-                    );
-
-
-                    score =
-                        Math.max(
-                            0,
-                            score - 1
+                    const buttons =
+                        choicesElement.querySelectorAll(
+                            "button"
                         );
 
 
-                    combo = 0;
+                    buttons.forEach(
+                        btn => {
+
+                            btn.disabled =
+                                true;
+
+                        }
+                    );
 
 
-                    scoreElement.textContent =
-                        `Score: ${score}`;
+                    /* =========================
+                       CORRECT
+                    ========================= */
+
+                    if (
+                        choice ===
+                        question.answer
+                    ) {
+
+                        button.classList.add(
+                            "correct"
+                        );
 
 
-                    comboElement.textContent =
-                        "🔥 Combo: 0";
+                        combo++;
 
 
-                    setTimeout(() => {
+                        if (
+                            combo >= 10
+                        ) {
 
-                        if (!gameOver) {
+                            score += 3;
 
-                            showQuestion(
-                                generateQuestion()
-                            );
+
+                            if (
+                                combo === 10
+                            ) {
+
+                                showBonus(
+                                    "⚡ COMBO 10! +3 SCORE"
+                                );
+
+                            }
+
+                        } else if (
+                            combo >= 5
+                        ) {
+
+                            score += 2;
+
+
+                            if (
+                                combo === 5
+                            ) {
+
+                                showBonus(
+                                    "🔥 COMBO 5! +2 SCORE"
+                                );
+
+                            }
+
+                        } else {
+
+                            score += 1;
+
                         }
 
-                    }, 500);
+
+                        scoreElement.textContent =
+                            `Score: ${score}`;
+
+
+                        updateCombo();
+
+
+                        setTimeout(
+                            () => {
+
+                                if (
+                                    !gameOver
+                                ) {
+
+                                    showQuestion(
+                                        generateQuestion()
+                                    );
+
+                                }
+
+                            },
+                            100
+                        );
+
+
+                    } else {
+
+                        /* =========================
+                           WRONG
+                        ========================= */
+
+                        button.classList.add(
+                            "wrong"
+                        );
+
+
+                        score =
+                            Math.max(
+                                0,
+                                score - 1
+                            );
+
+
+                        combo = 0;
+
+
+                        scoreElement.textContent =
+                            `Score: ${score}`;
+
+
+                        comboElement.textContent =
+                            "🔥 Combo: 0";
+
+
+                        setTimeout(
+                            () => {
+
+                                if (
+                                    !gameOver
+                                ) {
+
+                                    showQuestion(
+                                        generateQuestion()
+                                    );
+
+                                }
+
+                            },
+                            500
+                        );
+
+                    }
+
                 }
-            }
-        );
+            );
 
 
-        choicesElement.appendChild(
-            button
-        );
-    });
+            choicesElement.appendChild(
+                button
+            );
+
+        }
+    );
+
 }
 
 
-function startGame(duration) {
+/* =========================================================
+   START SOLO GAME
+========================================================= */
+
+function startGame(
+    duration
+) {
 
     clearInterval(timer);
 
 
-    lastGameMode = "solo";
+    lastGameMode =
+        "solo";
 
-    currentDuration = duration;
+
+    currentDuration =
+        duration;
 
 
     score = 0;
 
     combo = 0;
 
-    time = duration;
+    time =
+        duration;
 
-    gameOver = false;
+    gameOver =
+        false;
 
 
     timerElement.classList.remove(
@@ -581,13 +894,20 @@ function startGame(duration) {
 
     hideAllScreens();
 
+
     gameScreen.style.display =
         "flex";
 
 
-    if (bgMusic && bgMusic.paused) {
+    if (
+        bgMusic &&
+        bgMusic.paused
+    ) {
 
-        bgMusic.play().catch(() => {});
+        bgMusic
+            .play()
+            .catch(() => {});
+
     }
 
 
@@ -612,7 +932,8 @@ function startGame(duration) {
     );
 
 
-    bonusMessage.textContent = "";
+    bonusMessage.textContent =
+        "";
 
 
     showQuestion(
@@ -623,76 +944,103 @@ function startGame(duration) {
     showGameLeaderboard();
 
 
-    timer = setInterval(() => {
+    /* =========================
+       TIMER
+    ========================= */
 
-        time--;
+    timer =
+        setInterval(
+            () => {
 
-
-        timerElement.textContent =
-            `Time: ${time}`;
-
-
-        if (time <= 5 && time > 0) {
-
-            timerElement.classList.add(
-                "warning"
-            );
+                time--;
 
 
-            if (navigator.vibrate) {
-
-                navigator.vibrate(150);
-            }
-
-        } else {
-
-            timerElement.classList.remove(
-                "warning"
-            );
-        }
+                timerElement.textContent =
+                    `Time: ${time}`;
 
 
-        if (time <= 0) {
+                if (
+                    time <= 5 &&
+                    time > 0
+                ) {
 
-            clearInterval(timer);
-
-
-            timerElement.classList.remove(
-                "warning"
-            );
-
-
-            gameOver = true;
+                    timerElement.classList.add(
+                        "warning"
+                    );
 
 
-            stopMusic();
+                    if (
+                        navigator.vibrate
+                    ) {
+
+                        navigator.vibrate(
+                            150
+                        );
+
+                    }
+
+                } else {
+
+                    timerElement.classList.remove(
+                        "warning"
+                    );
+
+                }
 
 
-            gameScreen.style.display =
-                "none";
+                if (
+                    time <= 0
+                ) {
+
+                    clearInterval(timer);
 
 
-            gameOverScreen.style.display =
-                "flex";
+                    timerElement.classList.remove(
+                        "warning"
+                    );
 
 
-            soloSaveArea.style.display =
-                "flex";
+                    gameOver =
+                        true;
 
 
-            finalScore.textContent =
-                `Score: ${score}`;
-        }
+                    stopMusic();
 
-    }, 1000);
+
+                    gameScreen.style.display =
+                        "none";
+
+
+                    gameOverScreen.style.display =
+                        "flex";
+
+
+                    soloSaveArea.style.display =
+                        "flex";
+
+
+                    finalScore.textContent =
+                        `Score: ${score}`;
+
+                }
+
+            },
+            1000
+        );
+
 }
 
+
+/* =========================================================
+   SOLO BUTTONS
+========================================================= */
 
 btn30.addEventListener(
     "click",
     () => {
 
         startGame(30);
+
     }
 );
 
@@ -702,157 +1050,320 @@ btn60.addEventListener(
     () => {
 
         startGame(60);
+
     }
 );
 
 
-function getStorageKey() {
-
-    if (currentDuration === 30) {
-
-        return "scores30";
-    }
-
-    return "scores60";
-}
-
+/* =========================================================
+   SAVE SCORE TO SUPABASE
+========================================================= */
 
 saveScore.addEventListener(
     "click",
-    () => {
+    async () => {
 
         const name =
             playerName.value.trim();
 
 
-        if (name === "") {
+        if (
+            name === ""
+        ) {
+
             return;
+
         }
 
 
-        const storageKey =
-            getStorageKey();
+        /* =========================
+           DISABLE BUTTON
+        ========================= */
+
+        saveScore.disabled =
+            true;
 
 
-        let scores =
-            JSON.parse(
-                localStorage.getItem(
-                    storageKey
-                )
-            ) || [];
+        saveScore.textContent =
+            "Saving...";
 
 
-        scores.push({
-            name: name,
-            score: score
-        });
+        /* =========================
+           SEND TO SUPABASE
+        ========================= */
+
+        const success =
+            await submitOnlineScore(
+                name,
+                score,
+                currentDuration
+            );
 
 
-        scores.sort(
-            (a, b) =>
-                b.score - a.score
-        );
+        /* =========================
+           ENABLE BUTTON
+        ========================= */
+
+        saveScore.disabled =
+            false;
 
 
-        scores =
-            scores.slice(0, 10);
+        saveScore.textContent =
+            "Save Score";
 
 
-        localStorage.setItem(
-            storageKey,
-            JSON.stringify(scores)
-        );
+        if (
+            !success
+        ) {
+
+            alert(
+                "Failed to save score. Please check your internet connection and try again."
+            );
+
+            return;
+
+        }
 
 
-        playerName.value = "";
+        /* =========================
+           CLEAR NAME
+        ========================= */
+
+        playerName.value =
+            "";
 
 
-        showLeaderboard();
+        /* =========================
+           SHOW ONLINE LEADERBOARD
+        ========================= */
+
+        await showLeaderboard();
+
     }
 );
 
+// ==========================================
+// SUPABASE REALTIME LEADERBOARD
+// ==========================================
 
-function getScores(duration) {
+let leaderboardRealtimeChannel = null;
 
-    const key =
-        duration === 30
-            ? "scores30"
-            : "scores60";
+function setupLeaderboardRealtime() {
+    // Hapus subscription lama jika sudah ada
+    if (leaderboardRealtimeChannel) {
+        supabaseClient.removeChannel(
+            leaderboardRealtimeChannel
+        );
+    }
 
+    leaderboardRealtimeChannel =
+        supabaseClient
+            .channel("leaderboard-realtime")
+            .on(
+                "postgres_changes",
+                {
+                    event: "INSERT",
+                    schema: "public",
+                    table: "leaderboard"
+                },
+                async (payload) => {
+                    console.log(
+                        "🔥 Score baru masuk:",
+                        payload.new
+                    );
 
-    return JSON.parse(
-        localStorage.getItem(key)
-    ) || [];
+                    // Update leaderboard berdasarkan screen
+                    await refreshVisibleLeaderboards();
+                }
+            )
+            .subscribe((status) => {
+                console.log(
+                    "Leaderboard Realtime:",
+                    status
+                );
+            });
 }
 
 
-function showHomeLeaderboards() {
+// ==========================================
+// REFRESH LEADERBOARD YANG SEDANG TERLIHAT
+// ==========================================
 
-    homeLeaderboard30.innerHTML = "";
+async function refreshVisibleLeaderboards() {
 
-    homeLeaderboard60.innerHTML = "";
+    // HOME
+    if (
+        homeScreen &&
+        homeScreen.style.display !== "none"
+    ) {
+        await showHomeLeaderboards();
+    }
+
+    // GAME
+    if (
+        gameScreen &&
+        gameScreen.style.display !== "none"
+    ) {
+        await showGameLeaderboard();
+    }
+
+    // FULL LEADERBOARD
+    if (
+        leaderboardScreen &&
+        leaderboardScreen.style.display !== "none"
+    ) {
+        await showFullLeaderboard();
+    }
+}
+
+/* =========================================================
+   HOME ONLINE LEADERBOARD
+========================================================= */
+
+async function showHomeLeaderboards() {
+
+    homeLeaderboard30.innerHTML =
+        "<li>Loading...</li>";
+
+
+    homeLeaderboard60.innerHTML =
+        "<li>Loading...</li>";
 
 
     const scores30 =
-        getScores(30);
+        await getOnlineLeaderboard(
+            30
+        );
 
 
     const scores60 =
-        getScores(60);
-
-
-    scores30
-        .slice(0, 5)
-        .forEach(
-            player => {
-
-                const li =
-                    document.createElement(
-                        "li"
-                    );
-
-
-                li.textContent =
-                    `${player.name} - ${player.score}`;
-
-
-                homeLeaderboard30.appendChild(
-                    li
-                );
-            }
+        await getOnlineLeaderboard(
+            60
         );
 
 
-    scores60
-        .slice(0, 5)
-        .forEach(
-            player => {
+    /* =========================
+       30 SECONDS
+    ========================= */
 
-                const li =
-                    document.createElement(
-                        "li"
+    homeLeaderboard30.innerHTML =
+        "";
+
+
+    if (
+        scores30.length === 0
+    ) {
+
+        const li =
+            document.createElement(
+                "li"
+            );
+
+
+        li.textContent =
+            "No scores yet";
+
+
+        homeLeaderboard30.appendChild(
+            li
+        );
+
+    } else {
+
+        scores30
+            .slice(0, 5)
+            .forEach(
+                (
+                    player,
+                    index
+                ) => {
+
+                    const li =
+                        document.createElement(
+                            "li"
+                        );
+
+
+                    li.textContent =
+                        `${index + 1}. ${player.player_name} - ${player.score}`;
+
+
+                    homeLeaderboard30.appendChild(
+                        li
                     );
 
+                }
+            );
 
-                li.textContent =
-                    `${player.name} - ${player.score}`;
+    }
 
 
-                homeLeaderboard60.appendChild(
-                    li
-                );
-            }
+    /* =========================
+       60 SECONDS
+    ========================= */
+
+    homeLeaderboard60.innerHTML =
+        "";
+
+
+    if (
+        scores60.length === 0
+    ) {
+
+        const li =
+            document.createElement(
+                "li"
+            );
+
+
+        li.textContent =
+            "No scores yet";
+
+
+        homeLeaderboard60.appendChild(
+            li
         );
+
+    } else {
+
+        scores60
+            .slice(0, 5)
+            .forEach(
+                (
+                    player,
+                    index
+                ) => {
+
+                    const li =
+                        document.createElement(
+                            "li"
+                        );
+
+
+                    li.textContent =
+                        `${index + 1}. ${player.player_name} - ${player.score}`;
+
+
+                    homeLeaderboard60.appendChild(
+                        li
+                    );
+
+                }
+            );
+
+    }
+
 }
 
 
-function showGameLeaderboard() {
+/* =========================================================
+   GAME ONLINE LEADERBOARD
+========================================================= */
 
-    gameLeaderboardList.innerHTML = "";
+async function showGameLeaderboard() {
 
-
-    const scores =
-        getScores(currentDuration);
+    gameLeaderboardList.innerHTML =
+        "<li>Loading...</li>";
 
 
     gameLeaderboardTitle.textContent =
@@ -861,10 +1372,47 @@ function showGameLeaderboard() {
             : "⚡ 60 SEC LEADERBOARD";
 
 
+    const scores =
+        await getOnlineLeaderboard(
+            currentDuration
+        );
+
+
+    gameLeaderboardList.innerHTML =
+        "";
+
+
+    if (
+        scores.length === 0
+    ) {
+
+        const li =
+            document.createElement(
+                "li"
+            );
+
+
+        li.textContent =
+            "No scores yet";
+
+
+        gameLeaderboardList.appendChild(
+            li
+        );
+
+
+        return;
+
+    }
+
+
     scores
         .slice(0, 5)
         .forEach(
-            player => {
+            (
+                player,
+                index
+            ) => {
 
                 const li =
                     document.createElement(
@@ -873,18 +1421,24 @@ function showGameLeaderboard() {
 
 
                 li.textContent =
-                    `${player.name} - ${player.score}`;
+                    `${index + 1}. ${player.player_name} - ${player.score}`;
 
 
                 gameLeaderboardList.appendChild(
                     li
                 );
+
             }
         );
+
 }
 
 
-function showLeaderboard() {
+/* =========================================================
+   FULL LEADERBOARD
+========================================================= */
+
+async function showLeaderboard() {
 
     hideAllScreens();
 
@@ -893,15 +1447,49 @@ function showLeaderboard() {
         "flex";
 
 
-    leaderboard.innerHTML = "";
+    leaderboard.innerHTML =
+        "<li>Loading...</li>";
 
 
     const scores =
-        getScores(currentDuration);
+        await getOnlineLeaderboard(
+            currentDuration
+        );
+
+
+    leaderboard.innerHTML =
+        "";
+
+
+    if (
+        scores.length === 0
+    ) {
+
+        const li =
+            document.createElement(
+                "li"
+            );
+
+
+        li.textContent =
+            "No scores yet";
+
+
+        leaderboard.appendChild(
+            li
+        );
+
+
+        return;
+
+    }
 
 
     scores.forEach(
-        player => {
+        (
+            player,
+            index
+        ) => {
 
             const li =
                 document.createElement(
@@ -910,63 +1498,94 @@ function showLeaderboard() {
 
 
             li.textContent =
-                `${player.name} - ${player.score}`;
+                `${index + 1}. ${player.player_name} - ${player.score}`;
 
 
             leaderboard.appendChild(
                 li
             );
+
         }
     );
+
 }
 
+
+/* =========================================================
+   PLAY AGAIN
+========================================================= */
 
 playAgain.addEventListener(
     "click",
     () => {
 
-        if (lastGameMode === "solo") {
+        if (
+            lastGameMode ===
+            "solo"
+        ) {
 
             hideAllScreens();
+
 
             soloMenu.style.display =
                 "flex";
 
+
             return;
+
         }
 
 
-        if (lastGameMode === "versus") {
+        if (
+            lastGameMode ===
+            "versus"
+        ) {
 
             startVersusGame();
+
         }
+
     }
 );
 
+
+/* =========================================================
+   VERSUS START
+========================================================= */
 
 btnVersusStart.addEventListener(
     "click",
     () => {
 
         startVersusGame();
+
     }
 );
 
+
+/* =========================================================
+   START VERSUS GAME
+========================================================= */
 
 function startVersusGame() {
 
     clearInterval(timer);
 
 
-    lastGameMode = "versus";
+    lastGameMode =
+        "versus";
 
 
-    player1Score = 0;
+    player1Score =
+        0;
 
-    player2Score = 0;
+
+    player2Score =
+        0;
 
 
-    versusRunning = true;
+    versusRunning =
+        true;
 
 
     hideAllScreens();
@@ -994,10 +1613,17 @@ function startVersusGame() {
     showVersusQuestion(
         generateQuestion()
     );
+
 }
 
 
-function showVersusQuestion(question) {
+/* =========================================================
+   VERSUS QUESTION
+========================================================= */
+
+function showVersusQuestion(
+    question
+) {
 
     player1Question.textContent =
         `${question.number1} ${question.operator} ${question.number2} = ?`;
@@ -1007,12 +1633,16 @@ function showVersusQuestion(question) {
         `${question.number1} ${question.operator} ${question.number2} = ?`;
 
 
-    player1Choices.innerHTML = "";
+    player1Choices.innerHTML =
+        "";
 
-    player2Choices.innerHTML = "";
+
+    player2Choices.innerHTML =
+        "";
 
 
-    let answered = false;
+    let answered =
+        false;
 
 
     function checkAnswer(
@@ -1027,10 +1657,12 @@ function showVersusQuestion(question) {
         ) {
 
             return;
+
         }
 
 
-        answered = true;
+        answered =
+            true;
 
 
         const buttons1 =
@@ -1045,32 +1677,47 @@ function showVersusQuestion(question) {
             );
 
 
-        buttons1.forEach(button => {
+        buttons1.forEach(
+            button => {
 
-            button.disabled = true;
+                button.disabled =
+                    true;
 
-        });
+            }
+        );
 
 
-        buttons2.forEach(button => {
+        buttons2.forEach(
+            button => {
 
-            button.disabled = true;
+                button.disabled =
+                    true;
 
-        });
+            }
+        );
 
 
         const isCorrect =
-            choice === question.answer;
+            choice ===
+            question.answer;
 
 
-        if (isCorrect) {
+        /* =========================
+           CORRECT
+        ========================= */
+
+        if (
+            isCorrect
+        ) {
 
             clickedButton.classList.add(
                 "correct"
             );
 
 
-            if (player === 1) {
+            if (
+                player === 1
+            ) {
 
                 player1Score++;
 
@@ -1085,10 +1732,15 @@ function showVersusQuestion(question) {
 
                 player2ScoreElement.textContent =
                     `Score: ${player2Score}`;
+
             }
 
 
         } else {
+
+            /* =========================
+               WRONG
+            ========================= */
 
             clickedButton.classList.add(
                 "wrong"
@@ -1096,28 +1748,37 @@ function showVersusQuestion(question) {
 
 
             const allButtons = [
+
                 ...buttons1,
+
                 ...buttons2
+
             ];
 
 
-            allButtons.forEach(button => {
+            allButtons.forEach(
+                button => {
 
-                if (
-                    Number(button.textContent) ===
-                    question.answer
-                ) {
+                    if (
+                        Number(
+                            button.textContent
+                        ) ===
+                        question.answer
+                    ) {
 
-                    button.classList.add(
-                        "show-correct"
-                    );
+                        button.classList.add(
+                            "show-correct"
+                        );
+
+                    }
 
                 }
+            );
 
-            });
 
-
-            if (player === 1) {
+            if (
+                player === 1
+            ) {
 
                 player2Score++;
 
@@ -1132,96 +1793,128 @@ function showVersusQuestion(question) {
 
                 player1ScoreElement.textContent =
                     `Score: ${player1Score}`;
+
             }
+
         }
 
 
-        setTimeout(() => {
+        /* =========================
+           NEXT QUESTION
+        ========================= */
 
-            if (!versusRunning) {
-                return;
-            }
+        setTimeout(
+            () => {
 
+                if (
+                    !versusRunning
+                ) {
 
-            if (
-                player1Score >= 10 ||
-                player2Score >= 10
-            ) {
+                    return;
 
-                endVersusGame();
-
-                return;
-            }
+                }
 
 
-            showVersusQuestion(
-                generateQuestion()
-            );
+                if (
+                    player1Score >= 10 ||
+                    player2Score >= 10
+                ) {
 
-        }, 700);
+                    endVersusGame();
+
+                    return;
+
+                }
+
+
+                showVersusQuestion(
+                    generateQuestion()
+                );
+
+            },
+            700
+        );
+
     }
 
 
-    question.choices.forEach(choice => {
+    /* =========================
+       CREATE ANSWERS
+    ========================= */
 
-        const button1 =
-            document.createElement(
-                "button"
+    question.choices.forEach(
+        choice => {
+
+            /* PLAYER 1 */
+
+            const button1 =
+                document.createElement(
+                    "button"
+                );
+
+
+            button1.textContent =
+                choice;
+
+
+            button1.addEventListener(
+                "click",
+                () => {
+
+                    checkAnswer(
+                        choice,
+                        1,
+                        button1
+                    );
+
+                }
             );
 
 
-        button1.textContent = choice;
-
-
-        button1.addEventListener(
-            "click",
-            () => {
-
-                checkAnswer(
-                    choice,
-                    1,
-                    button1
-                );
-
-            }
-        );
-
-
-        player1Choices.appendChild(
-            button1
-        );
-
-
-        const button2 =
-            document.createElement(
-                "button"
+            player1Choices.appendChild(
+                button1
             );
 
 
-        button2.textContent = choice;
+            /* PLAYER 2 */
 
-
-        button2.addEventListener(
-            "click",
-            () => {
-
-                checkAnswer(
-                    choice,
-                    2,
-                    button2
+            const button2 =
+                document.createElement(
+                    "button"
                 );
 
-            }
-        );
+
+            button2.textContent =
+                choice;
 
 
-        player2Choices.appendChild(
-            button2
-        );
+            button2.addEventListener(
+                "click",
+                () => {
 
-    });
+                    checkAnswer(
+                        choice,
+                        2,
+                        button2
+                    );
+
+                }
+            );
+
+
+            player2Choices.appendChild(
+                button2
+            );
+
+        }
+    );
+
 }
 
+
+/* =========================================================
+   COMBO
+========================================================= */
 
 function updateCombo() {
 
@@ -1244,11 +1937,19 @@ function updateCombo() {
         showBonus(
             `🔥 COMBO ${combo}! +3 SECONDS`
         );
+
     }
+
 }
 
 
-function showBonus(message) {
+/* =========================================================
+   BONUS MESSAGE
+========================================================= */
+
+function showBonus(
+    message
+) {
 
     bonusMessage.textContent =
         message;
@@ -1267,19 +1968,28 @@ function showBonus(message) {
     );
 
 
-    setTimeout(() => {
+    setTimeout(
+        () => {
 
-        bonusMessage.classList.remove(
-            "show"
-        );
+            bonusMessage.classList.remove(
+                "show"
+            );
 
-    }, 1000);
+        },
+        1000
+    );
+
 }
 
 
+/* =========================================================
+   END VERSUS GAME
+========================================================= */
+
 function endVersusGame() {
 
-    versusRunning = false;
+    versusRunning =
+        false;
 
 
     stopMusic();
@@ -1297,7 +2007,9 @@ function endVersusGame() {
         "none";
 
 
-    if (player1Score >= 10) {
+    if (
+        player1Score >= 10
+    ) {
 
         finalScore.textContent =
             `PLAYER 1 WINS! ${player1Score} - ${player2Score}`;
@@ -1306,8 +2018,14 @@ function endVersusGame() {
 
         finalScore.textContent =
             `PLAYER 2 WINS! ${player2Score} - ${player1Score}`;
+
     }
+
 }
 
+
+/* =========================================================
+   START GAME
+========================================================= */
 
 showHome();
