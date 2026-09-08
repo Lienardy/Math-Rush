@@ -508,7 +508,6 @@ function showQuestion(question) {
 
                     }, 100);
 
-
                 } else {
 
                     button.classList.add(
@@ -611,6 +610,7 @@ function startGame(duration) {
     bonusMessage.classList.remove(
         "show"
     );
+
 
     bonusMessage.textContent = "";
 
@@ -1015,7 +1015,11 @@ function showVersusQuestion(question) {
     let answered = false;
 
 
-    function checkAnswer(choice, player) {
+    function checkAnswer(
+        choice,
+        player,
+        clickedButton
+    ) {
 
         if (
             !versusRunning ||
@@ -1029,7 +1033,42 @@ function showVersusQuestion(question) {
         answered = true;
 
 
-        if (choice === question.answer) {
+        const buttons1 =
+            player1Choices.querySelectorAll(
+                "button"
+            );
+
+
+        const buttons2 =
+            player2Choices.querySelectorAll(
+                "button"
+            );
+
+
+        buttons1.forEach(button => {
+
+            button.disabled = true;
+
+        });
+
+
+        buttons2.forEach(button => {
+
+            button.disabled = true;
+
+        });
+
+
+        const isCorrect =
+            choice === question.answer;
+
+
+        if (isCorrect) {
+
+            clickedButton.classList.add(
+                "correct"
+            );
+
 
             if (player === 1) {
 
@@ -1047,9 +1086,37 @@ function showVersusQuestion(question) {
                 player2ScoreElement.textContent =
                     `Score: ${player2Score}`;
             }
+
 
         } else {
 
+            clickedButton.classList.add(
+                "wrong"
+            );
+
+
+            const allButtons = [
+                ...buttons1,
+                ...buttons2
+            ];
+
+
+            allButtons.forEach(button => {
+
+                if (
+                    Number(button.textContent) ===
+                    question.answer
+                ) {
+
+                    button.classList.add(
+                        "show-correct"
+                    );
+
+                }
+
+            });
+
+
             if (player === 1) {
 
                 player2Score++;
@@ -1066,30 +1133,32 @@ function showVersusQuestion(question) {
                 player1ScoreElement.textContent =
                     `Score: ${player1Score}`;
             }
-        }
-
-
-        if (
-            player1Score >= 10 ||
-            player2Score >= 10
-        ) {
-
-            endVersusGame();
-
-            return;
         }
 
 
         setTimeout(() => {
 
-            if (versusRunning) {
-
-                showVersusQuestion(
-                    generateQuestion()
-                );
+            if (!versusRunning) {
+                return;
             }
 
-        }, 300);
+
+            if (
+                player1Score >= 10 ||
+                player2Score >= 10
+            ) {
+
+                endVersusGame();
+
+                return;
+            }
+
+
+            showVersusQuestion(
+                generateQuestion()
+            );
+
+        }, 700);
     }
 
 
@@ -1110,8 +1179,10 @@ function showVersusQuestion(question) {
 
                 checkAnswer(
                     choice,
-                    1
+                    1,
+                    button1
                 );
+
             }
         );
 
@@ -1136,8 +1207,10 @@ function showVersusQuestion(question) {
 
                 checkAnswer(
                     choice,
-                    2
+                    2,
+                    button2
                 );
+
             }
         );
 
@@ -1145,6 +1218,7 @@ function showVersusQuestion(question) {
         player2Choices.appendChild(
             button2
         );
+
     });
 }
 
