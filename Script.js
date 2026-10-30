@@ -1,5 +1,5 @@
-const SUPABASE_URL = "https://zytplmwkwplrddmgqshn.supabase.co";
-const SUPABASE_KEY = "sb_publishable_xwADdEri8ioRMQvRyi8Z5g_9LqScOp9";
+const SUPABASE_URL = "https://kcnyjkdesxeazxqnpbxj.supabase.co/rest/v1/";
+const SUPABASE_KEY = "sb_publishable_OvEe0ThjmgKDNFBlZY0zqg_ZXs5cq7L";
 
 const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
@@ -1004,4 +1004,4 @@ async function testSupabase() {
 
 testSupabase();
 subscribeLeaderboardRealtime();
-showHome();
+showHome(); 
